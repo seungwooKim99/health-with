@@ -15,11 +15,7 @@ LocaleConfig.defaultLocale = 'fr';
 
 const CalendarBase = () => {
 
-    const [markedDatesState, setMarkedDatesState] = useState(
-        {
-          '2021-06-16': {selected: true, selectedColor: COLORS.primary}
-        },
-      )
+    const [markedDatesState, setMarkedDatesState] = useState({})
 
       useEffect(()=>{
         console.log('updated!')
@@ -39,9 +35,9 @@ const CalendarBase = () => {
             const selectedDate = day.dateString
             console.log('selected : ' + selectedDate)
 
-            const newMarked = {
-                selectedDate: {selected: true, selectedColor: COLORS.primary}
-            }
+            let newMarked = {}
+            newMarked[selectedDate] = {selected: true, selectedColor: COLORS.primary}
+            
             setMarkedDatesState(newMarked)
 
             // console.log('selected day', day)
