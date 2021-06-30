@@ -1,32 +1,20 @@
 import React from "react";
 import { StyleSheet, View, Text, SafeAreaView, Button } from "react-native";
+import CalendarBase from "../components/Calendar";
 
 const Home = ( {navigation} ) => {
-  // function renderHeader() {
-  //   return (
-  //     <View style={{ flexDirection: "row", height: 40, backgroundColor: 'white' }}>
-  //       <View
-  //         style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-  //       >
-  //         <View style={styles.header}>
-  //           <Text>캘린더</Text>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   );
-  // }
 
   function renderCalendar() {
     return (
       <View style={{flex: 1}}>
-        <Text>캘린더</Text>
+        <CalendarBase/>
       </View>
     )
   }
 
   function renderSchedule() {
     return (
-      <View style={{flex: 1}}>
+      <View>
         <Text>스케줄</Text>
         <Button
           onPress={() => navigation.navigate("Workout", {
@@ -40,7 +28,6 @@ const Home = ( {navigation} ) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/*renderHeader()*/}
       {renderCalendar()}
       {renderSchedule()}
     </SafeAreaView>
@@ -50,14 +37,6 @@ const Home = ( {navigation} ) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    width: "70%",
-    height: "100%",
-    backgroundColor: "gray",
-    alignItems: "center",
-    justifyContent: 'center',
-    borderRadius: 30    
   }
 });
 
