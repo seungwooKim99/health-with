@@ -5,7 +5,7 @@ export const COLORS = {
   //BASE COLORS
   primary: "#D4003C", //main color
   secondary: "#CDA0AD",
-  liahtPrimary: "#EABECB",
+  lightPrimary: "#EABECB",
   lightSecondary: "#FFD7E2",
 
   //COLORS
