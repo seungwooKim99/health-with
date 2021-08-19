@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: MyConstants.SIZES.h2,
     alignSelf: 'center',
+    fontFamily: 'RobotoRegular'
   },
 });
 

@@ -7,6 +7,9 @@ import { Details, Workout } from "./screens";
 
 const Stack = createStackNavigator();
 
+// font 적용
+import { useFonts } from 'expo-font';
+
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {
   // tab navigator의 `route.state` state를 사용한다
@@ -23,6 +26,20 @@ function getHeaderTitle(route) {
 }
 
 const App = () => {
+  // key name으로 fontfaily 적용가능.
+  const [loaded] = useFonts({
+    RobotoBlack : require('./assets/fonts/Roboto-Black.ttf'),
+    RobotoBold : require('./assets/fonts/Roboto-Bold.ttf'),
+    RobotoRegular : require('./assets/fonts/Roboto-Regular.ttf'),
+    RobotoMedium : require('./assets/fonts/Roboto-Medium.ttf'),
+    RobotoThin : require('./assets/fonts/Roboto-Thin.ttf'),
+    RobotoLight : require('./assets/fonts/Roboto-Light.ttf'),
+  });
+  
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
