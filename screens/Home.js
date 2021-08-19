@@ -1,12 +1,22 @@
 import React, {useState} from "react";
-import { StyleSheet, View, Text, SafeAreaView, Button, ScrollView} from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, Button, ScrollView, TouchableOpacity} from "react-native";
 import Constants from 'expo-constants';
 
 import CalendarBase from "../components/Calendar";
-import * as MyConstants from '../constants/index';
+import { COLORS, SIZES } from "../constants";
 import { FontAwesome } from '@expo/vector-icons';
 
+import WorkoutCard from "../components/WorkoutCard";
+
 const Home = ( {navigation} ) => {
+
+  const today = new Date()
+  const koreaday = ['일','월','화','수','목','금','토']
+  const [selectedDate,setSelectedDate] = useState({
+    month:today.getMonth()+1,
+    date:today.getDate(),
+    day:today.getDay()
+  })
 
   function addWorkout(id){
     navigation.navigate("Workout",{
@@ -14,12 +24,12 @@ const Home = ( {navigation} ) => {
     })
   }
 
-  const [date,setdate] = useState(new Date)
-
   function renderCalendar() {
     return (
-      <View style={{flex: 1}}>
-        <CalendarBase/>
+      <View style={{flex:1}}>
+        <CalendarBase
+          setSelectedDate={setSelectedDate}
+        />
       </View>
     )
   }
@@ -27,16 +37,18 @@ const Home = ( {navigation} ) => {
   function renderTitle() {
     return(
       <View style={styles.titleView}>
-        <Text style={styles.text}>8월 19일 목요일</Text>
-        <View style>
-          <FontAwesome.Button
-            name="plus"
-            backgroundColor={MyConstants.COLORS.transparent}
-            color={MyConstants.COLORS.skyBlue}
-            onPress={() => addWorkout(80)}>
-          </FontAwesome.Button>
+        <Text style={styles.text}>{selectedDate.month}월 {selectedDate.date}일 {koreaday[selectedDate.day]}요일</Text>
+        <View style={{marginRight:SIZES.padding2}}>
+          <TouchableOpacity onPress={() => addWorkout(80)}>
+            <FontAwesome
+              name="plus"
+              backgroundColor={COLORS.transparent}
+              color={COLORS.skyBlue}
+              size={SIZES.h2}
+            >
+            </FontAwesome>
+          </TouchableOpacity>
         </View>
-
       </View>
     )
   }
@@ -44,12 +56,7 @@ const Home = ( {navigation} ) => {
   function renderSchedule() {
     return (
       <ScrollView style={styles.scrollView}>
-        <Button
-          onPress={() => navigation.navigate("Workout", {
-            itemId: 80
-          })}
-          title="수정 / 추가 탭"
-        />
+        <WorkoutCard></WorkoutCard>
       </ScrollView>
     )
   }
@@ -70,17 +77,18 @@ const styles = StyleSheet.create({
   titleView: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    marginTop: MyConstants.SIZES.padding * 3,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   scrollView: {
     backgroundColor: 'pink',
+    flex:1
   },
   text: {
-    fontSize: MyConstants.SIZES.h2,
+    fontSize: SIZES.h2,
     alignSelf: 'center',
-    fontFamily: 'RobotoRegular'
+    fontFamily: 'RobotoRegular',
+    marginLeft: SIZES.padding2,
   },
 });
 
