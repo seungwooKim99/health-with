@@ -24,11 +24,11 @@ const Home = ( {navigation} ) => {
   const [sessionTitle,setSessionTitle] = useState([
       {
         title: '랫풀다운',
-        tag: ['등']
+        tag: [{name:'등',color:COLORS.tag_pink}],
       },
       {
         title: '데드리프트',
-        tag: ['등','하체']
+        tag: [{name:'등',color:COLORS.tag_pink},{name:'하체',color:COLORS.tag_red}],
       }
     
   ])
@@ -164,11 +164,13 @@ const Home = ( {navigation} ) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {renderCalendar()}
-      {renderTitle()}
-      <>
-        {schedule === 1 ? renderSchedule() : noSchedule()}
-      </>
+      <ScrollView>
+        {renderCalendar()}
+        {renderTitle()}
+        <>
+          {schedule === 1 ? renderSchedule() : noSchedule()}
+        </>
+      </ScrollView>
     </SafeAreaView>
   )
 };
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
   },
   titleView: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.transparent,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

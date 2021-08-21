@@ -41,7 +41,7 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={{colors:{background:'white'}}}>
       <Stack.Navigator
       // screenOptions={{
       //   headerShown: false

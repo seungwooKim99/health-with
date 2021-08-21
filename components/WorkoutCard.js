@@ -1,67 +1,64 @@
 import React, {useEffect, useState} from "react";
-import { StyleSheet, View, Text, FlatList, Button, ScrollView, TouchableOpacity} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { COLORS, SIZES } from "../constants";
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-];
-
-// const temp = [
-//     {
-//       session_title: '',
-//       tag: [''],
-//       data: [
-//         {weight: '',rep:''},
-//       ]
-//     }
-// ];
-
-function fetchData (sessionTitle,sessionBody){
-    // put data into DATA array and render it to list
-    console.log(sessionTitle)
-}
-
-const Item = ({ item, onPress, style }) => (
-<TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
-</TouchableOpacity>
-);
-
+import Tag from "./Tag";
 
 const WorkoutCard = ({sessionTitle, sessionBody}) => {
-    const [selectedId, setSelectedId] = useState(null);
+    const [DATA,setDATA] = useState([])
 
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const onPress = () => {
+        console.log('hello')
+    }
 
-        return <Item item={item} onPress={() => setSelectedId(item.id)} style={{ backgroundColor }} />;
-    };
 
+    function fetchData (sessionTitle,sessionBody){
+        //console.log(sessionTitle[0].tag)
+        // put data into DATA array and render it to list
+        for(let i=0;i<sessionTitle.length;i++){
+            let obj = {}
+            obj=sessionBody[i]
+            obj.tag=sessionTitle[i].tag
+
+            setDATA(prevArr => [...prevArr, obj])
+        }
+    }
+
+    //fetch data only mount - data 바뀔 일이 없음
     useEffect(()=>{
         fetchData(sessionTitle,sessionBody)
     },[])
 
-    return (
-        <View style={styles.container}>
-        <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            extraData={selectedId}
-        />
-        </View>
-    );
+    function rendersets(item) {
+        return item.data.map((data,index)=>{
+            console.log(data)
+            return(
+                <View key={index} style={{flexDirection:'row'}}>
+                    <Text>{index + 1}세트</Text>
+                    <Text>{data.weight}kg</Text>
+                    <Text>{data.rep}회</Text>
+                </View>
+            )
+        })
+    }
+
+    return DATA.map((item,index)=>{
+        //console.log(item)
+        return(
+            <View key={index} style={styles.container}>
+                <TouchableOpacity onPress={onPress} style={styles.item}>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Tag tag={item.tag}></Tag>
+                    </View>
+                    <View>
+                        {rendersets(item)}
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
+    })
+
 }
 
 export default WorkoutCard;
@@ -72,12 +69,15 @@ const styles = StyleSheet.create({
       //marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-      backgroundColor: '#f9c2ff',
+      backgroundColor: COLORS.skyBlue,
       padding: 20,
-      marginVertical: 8,
-      marginHorizontal: 16,
+      marginBottom: 8,
+      borderRadius: SIZES.radius,
+      marginHorizontal: 10
     },
     title: {
-      fontSize: 32,
+      fontSize: SIZES.h4,
+      fontFamily: 'RobotoBlack',
+      paddingRight: SIZES.padding
     },
   });
