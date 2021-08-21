@@ -24,11 +24,11 @@ const Home = ( {navigation} ) => {
   const [sessionTitle,setSessionTitle] = useState([
       {
         title: '랫풀다운',
-        tag: [{name:'등',color:COLORS.tag_pink}],
+        tag: [{name:'등',color:COLORS.tag_orange}],
       },
       {
         title: '데드리프트',
-        tag: [{name:'등',color:COLORS.tag_pink},{name:'하체',color:COLORS.tag_red}],
+        tag: [{name:'등',color:COLORS.tag_darkblue},{name:'하체',color:COLORS.tag_purple}],
       }
     
   ])
@@ -131,8 +131,9 @@ const Home = ( {navigation} ) => {
             <FontAwesome
               name="plus"
               backgroundColor={COLORS.transparent}
-              color={COLORS.skyBlue}
+              color={COLORS.primary}
               size={SIZES.h2}
+              
             >
             </FontAwesome>
           </TouchableOpacity>
@@ -166,6 +167,14 @@ const Home = ( {navigation} ) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         {renderCalendar()}
+        <View
+          style={{
+              height: 1,
+              width: "100%",
+              backgroundColor: COLORS.lightGray2,
+              marginTop:SIZES.padding/2
+          }}
+        />
         {renderTitle()}
         <>
           {schedule === 1 ? renderSchedule() : noSchedule()}
@@ -184,10 +193,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.transparent,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop:SIZES.padding
+    marginTop:SIZES.padding2
   },
   text: {
-    fontSize: SIZES.h3,
+    fontSize: SIZES.h4,
     alignSelf: 'center',
     fontFamily: 'RobotoRegular',
     marginLeft: SIZES.padding*2,

@@ -20,15 +20,15 @@ export default Tag;
 const styles = StyleSheet.create({
     tag:{
         color: COLORS.lightWhite,
-        fontFamily:'RobotoRegular',
-        fontSize:SIZES.body3,
-        minWidth:SIZES.h2*2,
+        fontFamily:'RobotoBold',
+        fontSize:SIZES.body4,
+        minWidth:SIZES.h4*2,
         textAlign:'center'
     },
     container:{
-        paddingLeft: SIZES.padding,
+        paddingLeft: SIZES.base/2,
         alignItems:'center',
         justifyContent:'center',
-        marginBottom: 4
+        marginBottom: 2
     }
   });

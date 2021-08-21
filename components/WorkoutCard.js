@@ -55,7 +55,7 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
                         style={{
                             height: 1,
                             width: "100%",
-                            backgroundColor: COLORS.gray,
+                            backgroundColor: COLORS.lightGray3,
                             marginTop:SIZES.padding/2
                         }}
                     />
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     title: {
       fontSize: SIZES.body3,
       fontFamily: 'RobotoMedium',
-      paddingRight: SIZES.padding
+      paddingRight: SIZES.base
     },
     text: {
         fontSize: SIZES.body3,
