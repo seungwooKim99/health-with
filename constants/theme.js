@@ -1,15 +1,18 @@
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
+import { useFonts } from 'expo-font';
+
 export const COLORS = {
   //BASE COLORS
   primary: "#D4003C", //main color
   secondary: "#CDA0AD",
-  liahtPrimary: "#EABECB",
+  lightPrimary: "#EABECB",
   lightSecondary: "#FFD7E2",
 
   //COLORS
   gray: "#CDCDD2",
+  lightWhite: '#F9FAFB',
   lightGray: "#F5F5F6",
   lightGray2: "#F6F6F7",
   lightGray3: "#EFEFF1",
@@ -20,14 +23,25 @@ export const COLORS = {
 
   //iPhone color
   blue: "#007AFF",
-  skyBlue: "#1479FF"
+  skyBlue: "#1479FF",
+
+  //TAG COLORS
+  tag_red: "#D4003C",
+  tag_pink: "#FF7979",
+  tag_purple: "#7B46EA",
+  tag_blue: "#2E86DE",
+  tag_green: "#20C997",
+  tag_yellow: "#FACF7A",
+  tag_orange: "#F0942B",
+  tag_gray: "#95AFC0",
+  tag_darkblue: "#23A6B3"
 };
 
 export const SIZES = {
   //GLOBAL SIZES
   base: 8,
   font: 14,
-  radius: 30,
+  radius: 6,
   padding: 10,
   padding2: 12,
 
@@ -48,43 +62,6 @@ export const SIZES = {
   height,
 };
 
-export const FONTS = {
-  largeTitle: {
-    fontFamily: "Roboto-regular",
-    fontSize: SIZES.largeTitle,
-    lineHeight: 55,
-  },
-  h1: { fontFamily: "Roboto-Black", fontSize: SIZES.h1, lineHeight: 36 },
-  h2: { fontFamily: "Roboto-Bold", fontSize: SIZES.h2, lineHeight: 30 },
-  h3: { fontFamily: "Roboto-Bold", fontSize: SIZES.h3, lineHeight: 22 },
-  h4: { fontFamily: "Roboto-Bold", fontSize: SIZES.h4, lineHeight: 22 },
-  body1: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body1,
-    lineHeight: 36,
-  },
-  body2: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body2,
-    lineHeight: 30,
-  },
-  body3: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body3,
-    lineHeight: 22,
-  },
-  body4: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body4,
-    lineHeight: 22,
-  },
-  body5: {
-    fontFamily: "Roboto-Regular",
-    fontSize: SIZES.body5,
-    lineHeight: 22,
-  },
-};
-
-const appTheme = { COLORS, SIZES, FONTS };
+const appTheme = { COLORS, SIZES };
 
 export default appTheme;

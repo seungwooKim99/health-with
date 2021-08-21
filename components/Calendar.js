@@ -13,14 +13,10 @@ LocaleConfig.locales['fr'] = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-const CalendarBase = () => {
+const CalendarBase = ({setSelectedDate}) => {
 
     const [markedDatesState, setMarkedDatesState] = useState({})
 
-      useEffect(()=>{
-        console.log('updated!')
-        console.log(markedDatesState)
-      },[markedDatesState])
      return (
       <View>
         <Calendar
@@ -32,15 +28,16 @@ const CalendarBase = () => {
             day.selected = true
             day.selectedColor = COLORS.primary
 
-            const selectedDate = day.dateString
-            console.log('selected : ' + selectedDate)
-
             let newMarked = {}
-            newMarked[selectedDate] = {selected: true, selectedColor: COLORS.primary}
-            
+            newMarked[day.dateString] = {selected: true, selectedColor: COLORS.primary}
             setMarkedDatesState(newMarked)
 
-            // console.log('selected day', day)
+            setSelectedDate({
+              month: day.month,
+              date: day.day,
+              day: new Date(day.dateString).getDay(),
+              dateString: day.dateString
+            })
         }}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={'yyyy MM'}
