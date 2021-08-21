@@ -35,7 +35,8 @@ const CalendarBase = ({setSelectedDate}) => {
             setSelectedDate({
               month: day.month,
               date: day.day,
-              day: new Date(day.dateString).getDay()
+              day: new Date(day.dateString).getDay(),
+              dateString: day.dateString
             })
         }}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
