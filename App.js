@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 
 // font 적용
 import { useFonts } from 'expo-font';
+import { COLORS } from "./constants";
 
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {

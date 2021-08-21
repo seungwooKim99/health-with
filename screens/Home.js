@@ -126,7 +126,7 @@ const Home = ( {navigation} ) => {
     return(
       <View style={styles.titleView}>
         <Text style={styles.text}>{selectedDate.month}월 {selectedDate.date}일 {koreaday[selectedDate.day]}요일</Text>
-        <View style={{marginRight:SIZES.padding2}}>
+        <View style={{marginRight:SIZES.padding*2}}>
           <TouchableOpacity onPress={() => addWorkout(workout.id)}>
             <FontAwesome
               name="plus"
@@ -184,12 +184,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.transparent,
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop:SIZES.padding
   },
   text: {
-    fontSize: SIZES.h2,
+    fontSize: SIZES.h3,
     alignSelf: 'center',
     fontFamily: 'RobotoRegular',
-    marginLeft: SIZES.padding2,
+    marginLeft: SIZES.padding*2,
   },
 });
 

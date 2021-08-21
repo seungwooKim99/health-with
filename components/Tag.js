@@ -26,8 +26,9 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     container:{
-        paddingHorizontal: 2,
+        paddingLeft: SIZES.padding,
         alignItems:'center',
         justifyContent:'center',
+        marginBottom: 4
     }
   });

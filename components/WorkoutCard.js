@@ -33,10 +33,10 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
         return item.data.map((data,index)=>{
             console.log(data)
             return(
-                <View key={index} style={{flexDirection:'row'}}>
-                    <Text>{index + 1}세트</Text>
-                    <Text>{data.weight}kg</Text>
-                    <Text>{data.rep}회</Text>
+                <View key={index} style={{flexDirection:'row', justifyContent:'space-around'}}>
+                    <Text style={styles.text}>{index + 1}세트</Text>
+                    <Text style={styles.text}>{data.weight}kg</Text>
+                    <Text style={styles.text}>{data.rep}회</Text>
                 </View>
             )
         })
@@ -51,7 +51,15 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
                         <Text style={styles.title}>{item.title}</Text>
                         <Tag tag={item.tag}></Tag>
                     </View>
-                    <View>
+                    <View
+                        style={{
+                            height: 1,
+                            width: "100%",
+                            backgroundColor: COLORS.gray,
+                            marginTop:SIZES.padding/2
+                        }}
+                    />
+                    <View style={{marginTop:SIZES.padding}}>
                         {rendersets(item)}
                     </View>
                 </TouchableOpacity>
@@ -69,15 +77,19 @@ const styles = StyleSheet.create({
       //marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-      backgroundColor: COLORS.skyBlue,
-      padding: 20,
-      marginBottom: 8,
+      backgroundColor: COLORS.transparent,
+      paddingHorizontal: SIZES.padding*2,
       borderRadius: SIZES.radius,
-      marginHorizontal: 10
+      marginHorizontal: 10,
+      paddingTop:SIZES.base*2
     },
     title: {
-      fontSize: SIZES.h4,
-      fontFamily: 'RobotoBlack',
+      fontSize: SIZES.body3,
+      fontFamily: 'RobotoMedium',
       paddingRight: SIZES.padding
     },
+    text: {
+        fontSize: SIZES.body3,
+        fontFamily: 'RobotoRegular'
+    }
   });
