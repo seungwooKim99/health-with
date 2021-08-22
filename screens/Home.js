@@ -165,14 +165,6 @@ const Home = ( {navigation} ) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         {renderCalendar()}
-        <View
-          style={{
-              height: 1,
-              width: "100%",
-              backgroundColor: COLORS.lightGray2,
-              marginTop:SIZES.padding/2
-          }}
-        />
         {renderTitle()}
         <>
           {schedule === 1 ? renderSchedule() : noSchedule()}

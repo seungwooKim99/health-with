@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from "react-native";
+import { ScrollView } from 'react-native-gesture-handler';
 import favicon from '../assets/favicon.png'
+import { SIZES } from '../constants';
+import Line3 from '../components/Line3';
 
 const Workout = ({ route }) => {
 
     const [workout, setWorkout] = useState(null)
+
+    const [value, onChangeText] = React.useState('');
+
+    const onEndEditing = () => {
+        console.log('edit finished')
+    }
+    
 
     // useEffect(()=> {
     //     // 처음 마운트 되었을 때 수정인지 아닌지 판단하려면 넘어온 props를 통해 체크 필요함.
@@ -22,64 +32,35 @@ const Workout = ({ route }) => {
     //     }
     // }, []);
 
-    // function renderHeader() {
-    //     return(
-    //         <View style={{flexDirection: 'row', backgroundColor: 'white'}}>
-    //             {/* go back button */}
-    //             <TouchableOpacity
-    //                 style={{
-    //                     width: 50,
-    //                     paddingLeft: 15,
-    //                     justifyContent: 'center'
-    //                 }}
-    //                 onPress={()=>navigation.goBack()}
-    //             >
-    //                 <Image
-    //                     source={favicon}
-    //                     resizeMode='contain'
-    //                     style={{
-    //                         width:30,
-    //                         height: 30
-    //                     }}
-    //                 />
-    //             </TouchableOpacity>
-
-    //             {/* Page title Part */}
-    //             <View style={styles.primary}>
-    //                 <View style= {{
-    //                     width: "70%",
-    //                     height: 40,
-    //                 alignItems: 'center',
-    //                 justifyContent: 'center',
-    //                 paddingHorizontal: 10,
-    //                 borderRadius: 30,
-    //                 backgroundColor: 'gray'
-    //                 }}>
-    //                     <Text>Workout</Text>
-    //                 </View>
-    //             </View>
-
-    //             {/* 저장 버튼 */}
-    //             <TouchableOpacity
-    //                 style={{
-    //                     width: 50,
-    //                     paddingRight: 15,
-    //                     justifyContent: 'center'
-    //                 }}
-    //                 onPress={()=>navigation.goBack()}
-    //             >
-    //                 <Text style={{color: 'tomato'}}>저장</Text>
-    //             </TouchableOpacity>
-    //         </View>
-    //     )
-    // }
+    function renderFormTitle (){
+        return(
+            <>
+            <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                <TextInput
+                    style={{ fontSize:SIZES.h4,fontFamily:'RobotoBold'}}
+                    onChangeText={text => onChangeText(text)}
+                    value={value}
+                    autoFocus={true}
+                    placeholder='제목'
+                    onEndEditing={()=>onEndEditing()}
+                    autoCompleteType='off'
+                />
+                <TouchableOpacity>
+                    <Text>불러오기</Text>
+                </TouchableOpacity>
+            </View>
+            <Line3/>
+            </>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            {/*renderHeader()*/}
-            <Text>Workout</Text>
-            <Text>item id : {workout}</Text>
-            <Text>item id는 해당 workout id나 date id 둘 중 하나만 있으면 될 듯</Text>
+            <ScrollView>
+                <View style={{margin:'5%',}}>
+                    {renderFormTitle()}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

@@ -9,7 +9,8 @@ const Stack = createStackNavigator();
 
 // font 적용
 import { useFonts } from 'expo-font';
-import { COLORS } from "./constants";
+import { COLORS, SIZES } from "./constants";
+import { Button, Text, TouchableOpacity } from "react-native";
 
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {
@@ -56,7 +57,23 @@ const App = () => {
           })}
         />
         
-        <Stack.Screen name="Workout" component={Workout} options={({ route }) => ({ title: route.params.name })}/>
+        <Stack.Screen
+          name="Workout"
+          component={Workout} 
+          options={({ route }) => ({ 
+            title: route.params.name,
+            headerRight: () => (
+              // <Button
+              //   onPress={() => alert('This is a button!')}
+              //   title="저장"
+              //   color="red"
+              // />
+              <TouchableOpacity onPress={()=>alert('저장 누름')}>
+                <Text style={{color:COLORS.primary, fontSize:SIZES.h4, marginRight:SIZES.padding}}>저장</Text>
+              </TouchableOpacity>
+            )
+          })}
+          />
         <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
