@@ -5,6 +5,13 @@ import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-naviga
 import Tabs from "./navigation/tabs";
 import { Details, Workout } from "./screens";
 
+//import { HowToUse, Notice, RemoveAd, SendIdea, SendReview } from './screens/Detail';
+import HowToUse from "./screens/Detail/HowToUse";
+import Notice from "./screens/Detail/Notice";
+import RemoveAd from "./screens/Detail/RemoveAd";
+import SendIdea from "./screens/Detail/SendIdea";
+import SendReview from "./screens/Detail/SendReview";
+
 const Stack = createStackNavigator();
 
 // font 적용
@@ -57,6 +64,13 @@ const App = () => {
         />
         <Stack.Screen name="Workout" component={Workout} />
         <Stack.Screen name="Details" component={Details} />
+
+        <Stack.Screen name="HowToUse" component={HowToUse} />
+        <Stack.Screen name="Notice" component={Notice} />
+        <Stack.Screen name="RemoveAd" component={RemoveAd} />
+        <Stack.Screen name="SendIdea" component={SendIdea} />
+        <Stack.Screen name="SendReview" component={SendReview} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
