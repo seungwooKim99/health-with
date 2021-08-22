@@ -59,6 +59,7 @@ const Home = ( {navigation} ) => {
   // plus button
   function addWorkout(id){
     navigation.navigate("Workout",{
+      name:`${selectedDate.month}월 ${selectedDate.date}일 ${koreaday[selectedDate.day]}요일`,
       itemId: id
     })
   }
@@ -157,7 +158,7 @@ const Home = ( {navigation} ) => {
     return (
       <View style={{flex:1}}>
         <Text>
-          오늘은 운동을 안했네요
+          오늘은 운동 기록이 없습니다
         </Text>
       </View>
     )

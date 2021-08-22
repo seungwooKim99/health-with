@@ -55,7 +55,8 @@ const App = () => {
             headerTitle: getHeaderTitle(route)
           })}
         />
-        <Stack.Screen name="Workout" component={Workout} />
+        
+        <Stack.Screen name="Workout" component={Workout} options={({ route }) => ({ title: route.params.name })}/>
         <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
