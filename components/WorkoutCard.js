@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     item: {
       backgroundColor: COLORS.transparent,
       paddingHorizontal: SIZES.padding*2,
-      borderRadius: SIZES.radius,
+      //borderRadius: SIZES.radius,
       marginHorizontal: 10,
       paddingTop:SIZES.base*2
     },

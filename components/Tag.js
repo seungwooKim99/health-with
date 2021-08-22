@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
         color: COLORS.lightWhite,
         fontFamily:'RobotoBold',
         fontSize:SIZES.body4,
-        minWidth:SIZES.h4*2,
         textAlign:'center',
-        paddingTop:2
+        paddingTop:2,
+        margin:'2%',
     },
     container:{
         paddingLeft: SIZES.base/2,

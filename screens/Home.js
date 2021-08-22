@@ -156,10 +156,7 @@ const Home = ( {navigation} ) => {
 
   function noSchedule() {
     return (
-      <View style={{flex:1}}>
-        <Text>
-          오늘은 운동 기록이 없습니다
-        </Text>
+      <View style={{marginTop:SIZES.padding,height:'90%',justifyContent:'center',alignItems:'center', backgroundColor:COLORS.lightGray}}>
       </View>
     )
   }
