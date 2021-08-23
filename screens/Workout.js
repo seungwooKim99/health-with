@@ -11,10 +11,14 @@ const Workout = ({ route }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   
-
-
     // 임시
-    const [DATA,setDATA] = useState([])
+    const [DATA,setDATA] = useState([
+        {
+            title:'',
+            tag:[{name:'',color:''}],
+            data:[{rep:'',weight:'',time:''}]
+        }
+    ])
     // const [DATA,setDATA] = useState([
     //     {
     //         title: '랫풀다운',
@@ -42,13 +46,14 @@ const Workout = ({ route }) => {
 
     const [value, onChangeText] = useState('')
 
-    const onEndEditing = () => {
-        console.log('edit finished')
-    }
-
     function fetchData(){
         // get data from local storage
         console.log('fetchData')
+    }
+
+    const titleHandler = (t) => {
+        onChangeText(value)
+        console.log(t)
     }
 
     useEffect(()=> {
@@ -112,17 +117,33 @@ const Workout = ({ route }) => {
     //         </>
     //     )
     // }
-    function renderHeader(){
+    function renderHeader({index}){
         return(
             <>
                 <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <TextInput
                         style={{ fontSize:SIZES.h4,fontFamily:'RobotoBold'}}
+                        // onChangeText={onChangeText}
+                        // value={value}
                         onChangeText={onChangeText}
-                        value={value}
+                        // onChangeText={setDATA(prev =>{
+                        //     const list = prev.map((item,j)=>{
+                        //         if(j===index){
+                        //             return item.title = '';
+                        //         }else{
+                        //             return item;
+                        //         }
+                        //     })
+                            
+                        //     return{
+                        //         list
+                        //     }
+                        // })}
+                        value={DATA[0].title}
+                        
                         autoFocus={true}
                         placeholder='제목'
-                        onEndEditing={()=>onEndEditing()}
+                        // onEndEditing={()=>onEndEditing()}
                         autoCompleteType='off'
                         autoCorrect={false}
                     />
@@ -175,17 +196,19 @@ const Workout = ({ route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Line3/>
+            <View style={{marginTop:40, marginBottom:40}}>
+                <Line3/>
+            </View>
             </>
         )
     }
 
-    function renderForm(){
+    function renderForm({data,index}){
         return(
-            <>
-            {renderHeader()}
+            <View key={index}>
+            {renderHeader({index})}
             {renderBody()}
-            </>
+            </View>
         )
     }
 
@@ -193,7 +216,11 @@ const Workout = ({ route }) => {
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={{margin:'5%',}}>
-                    {renderForm()}
+                    {
+                        DATA.map((data,index)=>renderForm({data,index}))
+                    }
+                    {/* {renderForm('','')}
+                    {renderForm('','')} */}
                 </View>
             </ScrollView>
         </SafeAreaView>
