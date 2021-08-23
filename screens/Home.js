@@ -9,16 +9,21 @@ import { FontAwesome } from '@expo/vector-icons';
 import WorkoutCard from "../components/WorkoutCard";
 
 const Home = ( {navigation} ) => {
-
-  const today = new Date()
+  
   const koreaday = ['일','월','화','수','목','금','토']
   const [selectedDate,setSelectedDate] = useState({
-    month:today.getMonth()+1,
-    date:today.getDate(),
-    day:today.getDay(),
-    dateString: today.toISOString().substr(0,10)
+    month: '',
+    date:'',
+    day:'',
+    dateString:''
   })
   const [schedule,setSchedule] = useState(0)
+
+  //workout id,datestring 담는 state
+  const [workout,setWorkout] = useState({
+    id: 1,
+    dateString: selectedDate.dateString
+  })
 
   // 임시
   const [sessionTitle,setSessionTitle] = useState([
@@ -64,6 +69,27 @@ const Home = ( {navigation} ) => {
     })
   }
 
+  function setcurrent(){
+    const today = new Date()
+    let t_month = today.getMonth()+1
+    let t_date = today.getDate()
+    let t_day = today.getDay()
+
+    if (t_month.toString().length <2){
+      t_month = '0' + t_month
+    }
+    if (t_date.toString().length < 2){
+      t_date = '0' + t_date
+    }
+    const t_string = [today.getFullYear().toString(),t_month,t_date].join('-')
+    setSelectedDate({
+      month: t_month,
+      date:t_date,
+      day:t_day,
+      dateString: t_string
+    })
+  }
+
   function getWorkoutFromDB(props){
     // db로 datestring 넘겨서
     // workout.workout_date = props 인 workout.id get.
@@ -75,43 +101,40 @@ const Home = ( {navigation} ) => {
     //   해당 날짜에 운동이 없다고 표시해야함.
     //   리턴으로 뭘 주면 좋을까
     // }
-    if (props == 1){
+    console.log('get workout db - 1 yes : ' + props)
+    if (props == "2021-08-23" || props == "2021-08-24"){
       // 운동 함
       //console.log(props)
-      setSchedule(1)
+      setSchedule(0)
+      setWorkout({
+        // 임시로 쓰는 id.
+        id: 2,
+        dateString:selectedDate.dateString
+      })
     }else{
       // 운동안함
-      setSchedule(0)
+      setSchedule(1)
+      setWorkout({
+        // 임시로 쓰는 id.
+        id: 1,
+        dateString:selectedDate.dateString
+      })
     }
   }
 
-  const [workout,setWorkout] = useState({
-    id: 1,
-    dateString: selectedDate.dateString
-  })
+  // init 함수
+  useEffect(()=>{
+    setcurrent()
+    getWorkoutFromDB(selectedDate.dateString)
+  },[])
 
   useEffect(()=>{
-    if (selectedDate.dateString != ''){
-      if (selectedDate.dateString == "2021-08-23" || selectedDate.dateString == "2021-08-24"){
-        setWorkout({
-          // 임시로 쓰는 id.
-          id: 2,
-          dateString:selectedDate.dateString
-        })
-      }
-      else{
-        setWorkout({
-          // 임시로 쓰는 id.
-          id: 1,
-          dateString:selectedDate.dateString
-        })
-      }
-    }
+    getWorkoutFromDB(selectedDate.dateString)
   },[selectedDate])
 
-  useEffect(()=>{
-    getWorkoutFromDB(workout.id)
-  },[workout])
+  // useEffect(()=>{
+  //   getWorkoutFromDB(workout.id)
+  // },[workout])
 
   function renderCalendar() {
     return (

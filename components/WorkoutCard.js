@@ -31,7 +31,7 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
 
     function rendersets(item) {
         return item.data.map((data,index)=>{
-            console.log(data)
+            //console.log(data)
             return(
                 <View key={index} style={{flexDirection:'row', justifyContent:'space-around'}}>
                     <Text style={styles.text}>{index + 1}세트</Text>

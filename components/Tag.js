@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
         fontFamily:'RobotoBold',
         fontSize:SIZES.body4,
         textAlign:'center',
-        paddingTop:2,
-        margin:'2%',
+        padding:"0.5%",
+        paddingRight:"2%",
+        paddingLeft:"2%"
     },
     container:{
         paddingLeft: SIZES.base/2,
-        marginBottom: 2
     }
   });
