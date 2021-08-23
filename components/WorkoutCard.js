@@ -26,6 +26,7 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
 
     //fetch data only mount - data 바뀔 일이 없음
     useEffect(()=>{
+        console.log('몇번?')
         fetchData(sessionTitle,sessionBody)
     },[])
 
@@ -49,7 +50,12 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
                 <TouchableOpacity onPress={onPress} style={styles.item}>
                     <View style={{flexDirection:'row', alignItems:'center'}}>
                         <Text style={styles.title}>{item.title}</Text>
-                        <Tag tag={item.tag}></Tag>
+                        <>{
+                        item.tag.map((d,i)=>(
+                            <Tag key={i} name={d.name} color={d.color}></Tag>
+                        ))}
+                        </>
+                        {/* <Tag tag={item.tag}></Tag> */}
                     </View>
                     <View
                         style={{
