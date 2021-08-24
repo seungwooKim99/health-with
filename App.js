@@ -5,7 +5,18 @@ import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-naviga
 import Tabs from "./navigation/tabs";
 import { Details, Workout } from "./screens";
 
+//import { HowToUse, Notice, RemoveAd, SendIdea, SendReview } from './screens/Detail';
+import HowToUse from "./screens/Detail/HowToUse";
+import Notice from "./screens/Detail/Notice";
+import RemoveAd from "./screens/Detail/RemoveAd";
+import SendIdea from "./screens/Detail/SendIdea";
+import SendReview from "./screens/Detail/SendReview";
+
 const Stack = createStackNavigator();
+
+// font 적용
+import { useFonts } from 'expo-font';
+import { COLORS } from "./constants";
 
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {
@@ -23,8 +34,22 @@ function getHeaderTitle(route) {
 }
 
 const App = () => {
+  // key name으로 fontfaily 적용가능.
+  const [loaded] = useFonts({
+    RobotoBlack : require('./assets/fonts/Roboto-Black.ttf'),
+    RobotoBold : require('./assets/fonts/Roboto-Bold.ttf'),
+    RobotoRegular : require('./assets/fonts/Roboto-Regular.ttf'),
+    RobotoMedium : require('./assets/fonts/Roboto-Medium.ttf'),
+    RobotoThin : require('./assets/fonts/Roboto-Thin.ttf'),
+    RobotoLight : require('./assets/fonts/Roboto-Light.ttf'),
+  });
+  
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={{colors:{background:'white'}}}>
       <Stack.Navigator
       // screenOptions={{
       //   headerShown: false
@@ -39,6 +64,13 @@ const App = () => {
         />
         <Stack.Screen name="Workout" component={Workout} />
         <Stack.Screen name="Details" component={Details} />
+
+        <Stack.Screen name="HowToUse" component={HowToUse} />
+        <Stack.Screen name="Notice" component={Notice} />
+        <Stack.Screen name="RemoveAd" component={RemoveAd} />
+        <Stack.Screen name="SendIdea" component={SendIdea} />
+        <Stack.Screen name="SendReview" component={SendReview} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

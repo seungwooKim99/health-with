@@ -9,7 +9,6 @@ export {
     Home,
     Report,
     Settings,
-
     Workout,
     Details
 }
