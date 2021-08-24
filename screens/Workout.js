@@ -81,16 +81,36 @@ const Workout = ({ route }) => {
     }, []);
 
     function handleTagAdd(index){
+        // 체크해서 이미 있으면 아무것도 안함.
         let color = AllTag[index].color
         let name = AllTag[index].name
 
         let temp = [...DATA];
-        temp[whichTag].tag[index] = {...temp[whichTag].tag[index], color:color,name:name};
-        setDATA(temp)
+
+
+        let istrue = false
+        temp[whichTag].tag.map((i,j)=>{
+            if(i.name === name){
+                istrue = true
+            }
+        })
+
+        // 찾는함수
+        if(!istrue){
+            //temp[whichTag].tag[index] = {...temp[whichTag].tag[index], color:color,name:name};
+
+            temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
+
+            setDATA(temp)
+        }
         console.log(temp)
     }
-    function handleTagDelete(index){
-        console.log('delete?')
+    function handleTagDelete(index){        
+        const temp = DATA[whichTag].tag.filter((item,j)=>j!==index);
+        console.log(temp)
+        let result = [...DATA];
+        result[whichTag] = {...result[whichTag],tag:temp}
+        setDATA(result)
     }
 
     function handelTitle (event,index){
