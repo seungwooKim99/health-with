@@ -50,7 +50,7 @@ const App = () => {
       )
     }
     copyDB();
-    Alert.alert('DB Fetched!')
+    //Alert.alert('DB Fetched!')
   }, [])
 
   // key name으로 fontfaily 적용가능.

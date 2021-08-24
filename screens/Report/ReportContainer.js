@@ -28,20 +28,20 @@ export default () => {
   const [tags, setTags] = useState([])
   const [sets, setSets] = useState([])
 
-  useEffect(() => {
-    const setData = async () => {
-      setWorkouts(await Workout.query())
-      setSessions(await Session.query())
-      setTags(await Tag.query())
-      setSets(await Set.query())
+  // useEffect(() => {
+  //   const setData = async () => {
+  //     setWorkouts(await Workout.query())
+  //     setSessions(await Session.query())
+  //     setTags(await Tag.query())
+  //     setSets(await Set.query())
 
-      //setWorkouts(getWorkout())
-      //setSessions(getSession())
-      //setTags(await Tag.query())
-      //setSets(await Set.query())
-    }
-    setData()
-  }, [])
+  //     //setWorkouts(getWorkout())
+  //     //setSessions(getSession())
+  //     //setTags(await Tag.query())
+  //     //setSets(await Set.query())
+  //   }
+  //   setData()
+  // }, [])
 
   const createTables = async () => {
     await Session.createTable()
