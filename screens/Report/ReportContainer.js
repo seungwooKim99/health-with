@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useCallback } from 'react';
 import ReportPresenter from './ReportPresenter'
 import { Alert } from 'react-native';
+import { useEffect } from 'react';
 
 //model
 import Session from '../../model/Session';
@@ -10,7 +11,10 @@ import Set from '../../model/Set';
 import Tag from '../../model/Tag';
 import Workout from '../../model/Workout';
 import Workout_Session_Tag from '../../model/Workout_Session_Tag';
-import { useEffect } from 'react';
+
+//service
+//import { createWorkout, getWorkout } from '../../service/Workout';
+//import { createSession, getSession } from '../../service/Session';
 
 
 
@@ -30,6 +34,11 @@ export default () => {
       setSessions(await Session.query())
       setTags(await Tag.query())
       setSets(await Set.query())
+
+      //setWorkouts(getWorkout())
+      //setSessions(getSession())
+      //setTags(await Tag.query())
+      //setSets(await Set.query())
     }
     setData()
   }, [])
@@ -44,6 +53,7 @@ export default () => {
     Alert.alert('Table created successfully!')
   }
 
+  
   const createWorkout = async (date) => {
     const props = {
       date: date,
@@ -62,8 +72,9 @@ export default () => {
 
     const session = new Session(props)
     await session.save()
-    setSessions(await WorkSessionout.query())
+    setSessions(await Session.query())
   }
+  
 
   const createTag = async ({name}) => {
     const props = {

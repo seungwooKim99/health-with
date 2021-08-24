@@ -16,11 +16,11 @@ const Tag = ({text, color}) => {
   )
 }
 
-const ReportCard = ({isEnabled, setIsEnabled}) => {
+const ReportCard = ({isEnabled, setIsEnabled, title}) => {
   return (
     <View style={style.cardContainer}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
-        <Text style={style.cardSubTitle}>볼륨별 분석(kg)</Text>
+        <Text style={style.cardSubTitle}>{title}</Text>
         <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
       </View>
       <Chart />
@@ -53,12 +53,18 @@ export default ({
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
         <Text style={style.cardTitle}>운동 부위별 분석</Text>
-        <ReportCard isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
+        <ReportCard isEnabled={isEnabled} setIsEnabled={setIsEnabled} title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'} />
+        <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
+          <TouchableOpacity onPress={() => setPage(0)}>
+            <Text style={{fontSize: SIZES.h4}}>prev</Text>
+          </TouchableOpacity>
+          <Text style={{fontSize: SIZES.h4}}>{page+1}</Text>
+          <TouchableOpacity onPress={() => setPage(1)}>
+            <Text style={{fontSize: SIZES.h4}}>next</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <View>
-        <TouchableOpacity onPress={createTables}>
-          <Text>테이블 생성</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => createWorkout('2021-01-01')}>
           <Text>Workout 생성 (2021-01-01)</Text>
         </TouchableOpacity>
@@ -127,3 +133,54 @@ const style = StyleSheet.create({
     margin: SIZES.padding,
   },
 })
+
+/*
+      <View>
+        <TouchableOpacity onPress={createTables}>
+          <Text>테이블 생성</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => createWorkout('2021-01-01')}>
+          <Text>Workout 생성 (2021-01-01)</Text>
+        </TouchableOpacity>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Workout</Text>
+          {
+            workouts && workouts.map(workout => (
+              <Text key={workout.id}>
+                {JSON.stringify(workout)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Session</Text>
+          {
+            sessions && sessions.map(session => (
+              <Text key={session.id}>
+                {JSON.stringify(session)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Tags</Text>
+          {
+            tags && tags.map(tag => (
+              <Text key={tag.id}>
+                {JSON.stringify(tag)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Sets</Text>
+          {
+            sets && sets.map(set => (
+              <Text key={set.id}>
+                {JSON.stringify(set)}
+              </Text>
+            ))
+          }
+        </View>
+      </View>
+*/
