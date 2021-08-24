@@ -29,7 +29,7 @@ const SwitchBtn = () => {
   );
 }
 
-const Chart = () => {
+const Chart = ({labels, data, isRecent}) => {
   return (
     <View style={{alignItems:'center'}}>
       <LineChart
@@ -76,7 +76,17 @@ const Chart = () => {
   )
 }
 
-export default () => {
+export default ({
+  workouts,
+  sessions,
+  tags,
+  sets,
+  createTables,
+  createWorkout,
+  createSession,
+  createTag,
+  createSet
+}) => {
   return (
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
@@ -93,6 +103,54 @@ export default () => {
             <Tag text={'코어'} color={COLORS.tag_blue} />
             <Tag text={'등'} color={COLORS.tag_green} />
           </View>
+        </View>
+      </View>
+      <View>
+        <TouchableOpacity onPress={createTables}>
+          <Text>테이블 생성</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => createWorkout('2021-01-01')}>
+          <Text>Workout 생성 (2021-01-01)</Text>
+        </TouchableOpacity>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Workout</Text>
+          {
+            workouts && workouts.map(workout => (
+              <Text key={workout.id}>
+                {JSON.stringify(workout)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Session</Text>
+          {
+            sessions && sessions.map(session => (
+              <Text key={session.id}>
+                {JSON.stringify(session)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Tags</Text>
+          {
+            tags && tags.map(tag => (
+              <Text key={tag.id}>
+                {JSON.stringify(tag)}
+              </Text>
+            ))
+          }
+        </View>
+        <View>
+          <Text style={{fontSize: SIZES.h3}}>Sets</Text>
+          {
+            sets && sets.map(set => (
+              <Text key={set.id}>
+                {JSON.stringify(set)}
+              </Text>
+            ))
+          }
         </View>
       </View>
     </View>

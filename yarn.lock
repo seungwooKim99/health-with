@@ -3175,6 +3175,11 @@ expo-keep-awake@~9.1.2:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-9.1.2.tgz#b3e52c7bef0ade975ae88637a2bf980f6b573368"
   integrity sha512-CCuEOQUNLYtMA0rt0sQ9u5LlIMH7lDJG7dImoorfKMsP95yHXy8dl3oCdtaz2zbsPgggVYeom9gE+gQu+Ki4rQ==
 
+expo-sqlite-orm@^1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/expo-sqlite-orm/-/expo-sqlite-orm-1.5.6.tgz#9f49cc03a5510988adf9bac99152b8565396b114"
+  integrity sha512-DYVGdfZJUXl/5c4hjixuNBvZkgZmWYN65vQ80gxBmsKI8h5WMSiIG/2BRPfg+6hUVHx9OmCoyAtvSBmMhaMC1w==
+
 expo-sqlite@~9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/expo-sqlite/-/expo-sqlite-9.1.0.tgz#003323479b3e342ab063e12b13ffe68c76e91af3"

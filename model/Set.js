@@ -1,0 +1,25 @@
+import * as  SQLite from 'expo-sqlite'
+import { BaseModel, types } from 'expo-sqlite-orm'
+
+export default class Set extends BaseModel {
+  constructor(obj) {
+    super(obj)
+  }
+
+  static get database() {
+    return async () => SQLite.openDatabase('testDB.db')
+  }
+
+  static get tableName() {
+    return 'set'
+  }
+
+  static get columnMapping() {
+    return {
+      id: { type: types.INTEGER, primary_key: true },
+      weight: { type: types.INTEGER },
+      rep: { type: types.INTEGER },
+      time: { type: types.INTEGER },
+    }
+  }
+}
