@@ -15,7 +15,8 @@ const Workout = ({ route }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const [bottomSheetOpened,setBottomSheetOpened] = useState(false)
-  
+    const [whichTag,setWichTag] =useState(0)
+
     // 임시
     const [DATA,setDATA] = useState([
         {
@@ -55,8 +56,6 @@ const Workout = ({ route }) => {
     //     }
     // ])
 
-    const [value, onChangeText] = useState('')
-
     function fetchData(){
         // get data from local storage
         console.log('fetchData')
@@ -81,10 +80,17 @@ const Workout = ({ route }) => {
         }
     }, []);
 
-    function handleTagPressed(index){
-        console.log(index)
-        // DATA 인덱스 찾기
-        // DATA 태그 안에 데이터 넣기
+    function handleTagAdd(index){
+        let color = AllTag[index].color
+        let name = AllTag[index].name
+
+        let temp = [...DATA];
+        temp[whichTag].tag[index] = {...temp[whichTag].tag[index], color:color,name:name};
+        setDATA(temp)
+        console.log(temp)
+    }
+    function handleTagDelete(index){
+        console.log('delete?')
     }
 
     function handelTitle (event,index){
@@ -128,7 +134,7 @@ const Workout = ({ route }) => {
                     {
                     AllTag.map((d,i)=>(
                         <TouchableOpacity key={i} onPress={()=>{
-                            handleTagPressed(i)
+                            handleTagAdd(i)
                         }}>
                         <Tag name={d.name} color={d.color}></Tag>
                         </TouchableOpacity>
@@ -138,7 +144,18 @@ const Workout = ({ route }) => {
             <Line3/>
 
             <View style={styles.tagTitleContainer}>
-                <Text style={styles.title}>선택된 태그</Text>    
+                <Text style={styles.title}>선택된 태그</Text>  
+                <View style={{flexDirection:'row',paddingTop:SIZES.padding2}}>
+                {
+                    DATA[whichTag].tag.map((d,i)=>(
+                        <TouchableOpacity key={i} onPress={()=>{
+                            handleTagDelete(i)
+                        }}>
+                            <Tag name={d.name} color={d.color}></Tag>
+                        </TouchableOpacity>
+                    ))
+                }
+                </View>
             </View>
             <Line3/>
 
@@ -199,7 +216,10 @@ const Workout = ({ route }) => {
 
     function renderTagPlus(data,index){
         return(
-            <TouchableOpacity key={index} onPress={()=>TagSheet.current.snapTo(0)}>
+            <TouchableOpacity key={index} onPress={()=>{
+                    setWichTag(index)
+                    TagSheet.current.snapTo(0)
+                }}>
                 <Tag name='+ 태그추가' color={COLORS.primary}></Tag>
             </TouchableOpacity>
         )
