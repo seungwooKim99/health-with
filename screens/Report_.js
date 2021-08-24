@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Switch } from "react-native";
 import { LineChart } from 'react-native-chart-kit';
-import { Rect, Svg, Text as TextSVG} from 'react-native-svg';
 import { COLORS, SIZES } from '../constants';
 
 const Tag = ({text, color}) => {

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
@@ -11,12 +12,17 @@ import Notice from "./screens/Detail/Notice";
 import RemoveAd from "./screens/Detail/RemoveAd";
 import SendIdea from "./screens/Detail/SendIdea";
 import SendReview from "./screens/Detail/SendReview";
-
-const Stack = createStackNavigator();
+import { Alert } from "react-native";
 
 // font 적용
 import { useFonts } from 'expo-font';
 import { COLORS } from "./constants";
+
+// import existing db
+import * as FileSystem from 'expo-file-system';
+import {Asset} from 'expo-asset';
+
+const Stack = createStackNavigator();
 
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {
@@ -34,6 +40,18 @@ function getHeaderTitle(route) {
 }
 
 const App = () => {
+  //copy .db file
+  useEffect(() => {
+    const copyDB = async () => {
+      await FileSystem.downloadAsync(
+        Asset.fromModule(require('./db/testDB.db')).uri,
+        FileSystem.documentDirectory + 'SQLite/testDB.db'
+      )
+    }
+    copyDB();
+    Alert.alert('DB Fetched!')
+  }, [])
+
   // key name으로 fontfaily 적용가능.
   const [loaded] = useFonts({
     RobotoBlack : require('./assets/fonts/Roboto-Black.ttf'),

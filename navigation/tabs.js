@@ -1,8 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { Home, Report, Settings } from "../screens";
+import { Home, Settings } from "../screens";
 // import { COLORS, icons } from "../constatns"
+
+import Report from "../screens/Report"
 
 const Tab = createBottomTabNavigator();
 
