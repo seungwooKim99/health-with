@@ -15,40 +15,32 @@ import { useEffect } from 'react';
 
 
 export default () => {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const [page, setPage] = useState(0);
 
   const [workouts, setWorkouts] = useState([])
   const [sessions, setSessions] = useState([])
   const [tags, setTags] = useState([])
   const [sets, setSets] = useState([])
 
-  useEffect(async () => {
-    setWorkouts(await Workout.query())
-    setSessions(await Session.query())
-    setTags(await Tag.query())
-    setSets(await Set.query())
+  useEffect(() => {
+    const setData = async () => {
+      setWorkouts(await Workout.query())
+      setSessions(await Session.query())
+      setTags(await Tag.query())
+      setSets(await Set.query())
+    }
+    setData()
   }, [])
-
-  /*
-  useEffect(async () => {
-    setSessions(await Session.query())
-  }, [])
-
-  useEffect(async () => {
-    setTags(await Tag.query())
-  }, [])
-
-  useEffect(async () => {
-    setSets(await Set.query())
-  }, [])
-  */
 
   const createTables = async () => {
-    //await Session.createTable()
-    //await Session_Set.createTable()
-    //await Set.createTable()
-    //await Tag.createTable()
+    await Session.createTable()
+    await Session_Set.createTable()
+    await Set.createTable()
+    await Tag.createTable()
     await Workout.createTable()
-    //await Workout_Session_Tag.createTable()
+    await Workout_Session_Tag.createTable()
     Alert.alert('Table created successfully!')
   }
 
@@ -97,6 +89,10 @@ export default () => {
 
   return (
     <ReportPresenter
+      isEnabled={isEnabled}
+      setIsEnabled={setIsEnabled}
+      page={page}
+      setPage={setPage}
       workouts={workouts}
       sessions={sessions}
       tags={tags}
