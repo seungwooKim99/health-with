@@ -15,13 +15,13 @@ const Workout = ({ route }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const [bottomSheetOpened,setBottomSheetOpened] = useState(false)
-    const [whichTag,setWichTag] =useState(0)
+    const [whichTag,setWhichTag] =useState(0)
 
     // 임시
     const [DATA,setDATA] = useState([
         {
             title:'',
-            tag:[{name:'',color:''}],
+            tag:[{name:'등',color:COLORS.tag_darkblue},{name:'하체',color:COLORS.tag_purple}],
             data:[{rep:'',weight:'',time:''}]
         }
     ])
@@ -161,7 +161,7 @@ const Workout = ({ route }) => {
         setBottomSheetOpened(!bottomSheetOpened)
     }
 
-    const renderTag = () => (
+    const renderbottomsheet = () => (
         <View style={styles.tagContainer}>
             <View style={styles.tagTitleContainer}>
                 <Text style={styles.title}>태그 목록</Text>
@@ -252,7 +252,7 @@ const Workout = ({ route }) => {
     function renderTagPlus(index){
         return(
             <TouchableOpacity onPress={()=>{
-                    setWichTag(index)
+                    setWhichTag(index)
                     TagSheet.current.snapTo(0)
                 }}>
                 <Tag name='+ 태그추가' color={COLORS.primary}></Tag>
@@ -261,6 +261,7 @@ const Workout = ({ route }) => {
     }
 
     function renderHeader(index){
+        console.log(DATA)
         return(
             <>
                 <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
@@ -274,18 +275,21 @@ const Workout = ({ route }) => {
                         autoCompleteType='off'
                         autoCorrect={false}
                     />
-                    <View key={index} style={{flexDirection:'row'}}>
+                    <View style={{flexDirection:'row', alignItems:'center'}}>
                     {
-                        DATA[index].tag.map((data,index)=>{
-                            <TouchableOpacity key={index}>
-                                <Tag name={data.name} color={data.color}></Tag>
+                        DATA[index].tag.map((item,index)=>(                        
+                            <TouchableOpacity key={index} onPress={()=>{
+                                handleTagDelete(index)
+                            }}>
+                                <Tag name={item.name} color={item.color}></Tag>
                             </TouchableOpacity>
-                        })
+                        ))
                     }
-                    </View>
                     {
                         renderTagPlus(index)
                     }
+                    </View>
+                    
                 </View>
                 <Line2/>
             </>
@@ -369,7 +373,7 @@ const Workout = ({ route }) => {
                 ref={TagSheet}
                 snapPoints={[600, 0, 0]}
                 borderRadius={20}
-                renderContent={renderTag}
+                renderContent={renderbottomsheet}
                 initialSnap={1}
                 onOpenStart={bottomSheetController}
                 onCloseEnd={bottomSheetController}             
