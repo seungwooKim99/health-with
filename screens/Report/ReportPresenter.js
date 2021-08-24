@@ -2,8 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Switch } from "react-native";
 import { LineChart } from 'react-native-chart-kit';
-import { Rect, Svg, Text as TextSVG} from 'react-native-svg';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, SIZES } from '../../constants';
 
 const Tag = ({text, color}) => {
   return (
@@ -77,33 +76,28 @@ const Chart = () => {
   )
 }
 
-const ReportCard = () => {
+export default () => {
   return (
-    <View style={style.container}>
-      <Text style={style.cardTitle}>운동 부위별 분석</Text>
-      <View style={style.cardContainer}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
-          <Text style={style.cardSubTitle}>볼륨별 분석(kg)</Text>
-          <SwitchBtn />
-        </View>
-        <Chart />
-        <View style={{flexDirection: 'row', padding: SIZES.padding}}>
-          <Tag text={'하체'} color={COLORS.tag_yellow} />
-          <Tag text={'가슴'} color={COLORS.tag_pink} />
-          <Tag text={'코어'} color={COLORS.tag_blue} />
-          <Tag text={'등'} color={COLORS.tag_green} />
+    <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
+      <View style={style.container}>
+        <Text style={style.cardTitle}>운동 부위별 분석</Text>
+        <View style={style.cardContainer}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
+            <Text style={style.cardSubTitle}>볼륨별 분석(kg)</Text>
+            <SwitchBtn />
+          </View>
+          <Chart />
+          <View style={{flexDirection: 'row', padding: SIZES.padding}}>
+            <Tag text={'하체'} color={COLORS.tag_yellow} />
+            <Tag text={'가슴'} color={COLORS.tag_pink} />
+            <Tag text={'코어'} color={COLORS.tag_blue} />
+            <Tag text={'등'} color={COLORS.tag_green} />
+          </View>
         </View>
       </View>
     </View>
   )
 }
-const Report = ({navigation}) => {
-    return (
-        <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
-            <ReportCard />
-        </View>
-    );
-};
 
 const style = StyleSheet.create({
   container:{
@@ -125,5 +119,3 @@ const style = StyleSheet.create({
     margin: SIZES.padding,
   },
 })
-
-export default Report;
