@@ -97,10 +97,25 @@ const Workout = ({ route }) => {
 
         // 찾는함수
         if(!istrue){
+            //문제 없음
+            if(temp[whichTag].tag.length === 0){
+                temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
+            }else{
+                if(temp[whichTag].tag[0].name===''){
+                    temp[whichTag].tag[0] = {...temp[whichTag].tag[index], color:color,name:name};
+                }else{
+                    temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
+                }
+            }
             //temp[whichTag].tag[index] = {...temp[whichTag].tag[index], color:color,name:name};
+            //아예 빈 배열이라면?
+            // if(temp[whichTag].tag[index].name===''){
+            //     temp[whichTag].tag[index] = {...temp[whichTag].tag[index], color:color,name:name};
+            // }else{
+            //     temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
+            // }
 
-            temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
-
+            //temp[whichTag].tag = [...temp[whichTag].tag,{color:color,name:name}]
             setDATA(temp)
         }
         console.log(temp)
@@ -234,9 +249,9 @@ const Workout = ({ route }) => {
         )
     }
 
-    function renderTagPlus(data,index){
+    function renderTagPlus(index){
         return(
-            <TouchableOpacity key={index} onPress={()=>{
+            <TouchableOpacity onPress={()=>{
                     setWichTag(index)
                     TagSheet.current.snapTo(0)
                 }}>
@@ -259,8 +274,17 @@ const Workout = ({ route }) => {
                         autoCompleteType='off'
                         autoCorrect={false}
                     />
+                    <View key={index} style={{flexDirection:'row'}}>
                     {
-                        DATA.map((data,index)=>renderTagPlus(data,index))
+                        DATA[index].tag.map((data,index)=>{
+                            <TouchableOpacity key={index}>
+                                <Tag name={data.name} color={data.color}></Tag>
+                            </TouchableOpacity>
+                        })
+                    }
+                    </View>
+                    {
+                        renderTagPlus(index)
                     }
                 </View>
                 <Line2/>
