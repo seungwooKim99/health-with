@@ -21,7 +21,7 @@ const Workout = ({ route }) => {
     const [DATA,setDATA] = useState([
         {
             title:'',
-            tag:[{name:'등',color:COLORS.tag_darkblue},{name:'하체',color:COLORS.tag_purple}],
+            tag:[{name:'',color:''}],
             data:[{rep:'',weight:'',time:''}]
         }
     ])
