@@ -5,6 +5,7 @@ import { COLORS, SIZES } from '../constants';
 import Line3 from '../components/Line3';
 import Tag from '../components/Tag';
 import Line2 from '../components/Line2';
+import Line1 from '../components/Line1';
 import { FontAwesome } from '@expo/vector-icons';
 
 const Workout = ({ route }) => {
@@ -75,72 +76,25 @@ const Workout = ({ route }) => {
         }
     }, []);
 
-    // function renderAll(){
-    //     return DATA.map((item,index)=>{
-    //         return(
-    //             <View key={index}>
-    //                 {renderFormTitle(item,index)}
-    //             </View>
-    //         )
-    //     })
-    // }
+    function handelTitle (event,index){
+        let temp = [...DATA];
+        temp[index] = {...temp[index], title: event};
+        setDATA(temp)
+    }
+    function handleWeight (event,index){
+        let temp = [...DATA];
+        temp[index] = {...temp[index], title: event};
+        setDATA(temp)
+    }
 
-    // function renderFormTitle (item,index){
-    //     return(
-    //         <>
-    //         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-    //             <TextInput
-    //                 style={{ fontSize:SIZES.h4,fontFamily:'RobotoBold'}}
-    //                 onChangeText={text => setDATA(prevArr => [...prevArr,prevArr[index].title=text])}
-    //                 value={item.title}
-    //                 autoFocus={true}
-    //                 placeholder='제목'
-    //                 onEndEditing={()=>onEndEditing()}
-    //                 autoCompleteType='off'
-    //                 autoCorrect={false}
-    //             />
-    //             {item.tag?<>
-    //                     <View style={{flexDirection:'row',alignItems:'center'}}>
-    //                         <Tag tag={item.tag}></Tag>
-    //                         <TouchableOpacity style={{paddingLeft: SIZES.base/2}}>
-    //                         <View style={{backgroundColor:COLORS.primary, borderRadius:SIZES.radius}}>
-    //                             <Text style={styles.tag}>태그 추가</Text>
-    //                         </View>
-    //                     </TouchableOpacity>
-    //                     </View>
-                        
-    //                 </>:
-    //             <TouchableOpacity><Text>불러오기</Text></TouchableOpacity>
-    //             }
-    //         </View>
-    //         <Line3/>
-    //         </>
-    //     )
-    // }
-    function renderHeader({index}){
+    function renderHeader(index){
         return(
             <>
                 <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <TextInput
                         style={{ fontSize:SIZES.h4,fontFamily:'RobotoBold'}}
-                        // onChangeText={onChangeText}
-                        // value={value}
-                        onChangeText={onChangeText}
-                        // onChangeText={setDATA(prev =>{
-                        //     const list = prev.map((item,j)=>{
-                        //         if(j===index){
-                        //             return item.title = '';
-                        //         }else{
-                        //             return item;
-                        //         }
-                        //     })
-                            
-                        //     return{
-                        //         list
-                        //     }
-                        // })}
-                        value={DATA[0].title}
-                        
+                        onChangeText={(event)=>handelTitle(event,index)}
+                        value={DATA[index].title}
                         autoFocus={true}
                         placeholder='제목'
                         // onEndEditing={()=>onEndEditing()}
@@ -154,7 +108,8 @@ const Workout = ({ route }) => {
         )
     }
 
-    function renderBody(){
+    function renderBody(index){
+        console.log(DATA)
         return(
             <>
             <View style={{margin:'3%'}}>
@@ -170,6 +125,7 @@ const Workout = ({ route }) => {
                         style={{transform: [{ scaleX: .8 }, { scaleY: .8 }]}}
                     />
                 </View>
+
                 <View style={styles.rowcontainer}>
                     <View style={{flexDirection:'row', alignItems:'center'}}>
                         <FontAwesome
@@ -180,10 +136,41 @@ const Workout = ({ route }) => {
                         />
                         <Text style={[styles.text,{marginLeft:SIZES.padding2*2}]}>1세트</Text>
                     </View>
-                    <Text style={styles.text}>20kg</Text>
-                    <Text style={styles.text}>10회</Text>
-                    <TouchableOpacity><Text style={{color:COLORS.primary, fontSize:SIZES.body1,fontFamily:'RobotoBold',marginRight:'3%'}}>-</Text></TouchableOpacity>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'center',marginRight:SIZES.padding}}>
+                        <TextInput
+                            style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
+                            onChangeText={(event)=>handelTitle(event,index)}
+                            value={DATA[index].title}
+                            autoFocus={true}
+                            
+                            // onEndEditing={()=>onEndEditing()}
+                            autoCompleteType='off'
+                            autoCorrect={false}
+                        />
+                        <Line1/>
+                        </View>
+                        <Text style={styles.text}>kg</Text>
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <View style={{alignItems:'center',marginRight:SIZES.padding}}>
+                        <TextInput
+                            style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
+                            onChangeText={(event)=>handelTitle(event,index)}
+                            value={DATA[index].title}
+                            autoFocus={true}
+                            
+                            // onEndEditing={()=>onEndEditing()}
+                            autoCompleteType='off'
+                            autoCorrect={false}
+                        />
+                        <Line1/>
+                        </View>
+                        <Text style={styles.text}>회</Text>
+                    </View>
+                    <TouchableOpacity><Text style={{color:COLORS.primary, fontSize:SIZES.body1,fontFamily:'RobotoBold',marginRight:'3%',marginBottom:3}}>-</Text></TouchableOpacity>
                 </View>
+
                 <View style={{flexDirection:'row', alignItems:'center',marginTop:SIZES.padding}}>
                     <FontAwesome
                     name="plus"
@@ -203,11 +190,11 @@ const Workout = ({ route }) => {
         )
     }
 
-    function renderForm({data,index}){
+    function renderForm(data,index){
         return(
             <View key={index}>
-            {renderHeader({index})}
-            {renderBody()}
+            {renderHeader(index)}
+            {renderBody(index)}
             </View>
         )
     }
@@ -217,7 +204,7 @@ const Workout = ({ route }) => {
             <ScrollView>
                 <View style={{margin:'5%',}}>
                     {
-                        DATA.map((data,index)=>renderForm({data,index}))
+                        DATA.map((data,index)=>renderForm(data,index))
                     }
                     {/* {renderForm('','')}
                     {renderForm('','')} */}
