@@ -16,7 +16,8 @@ import { Alert } from "react-native";
 
 // font 적용
 import { useFonts } from 'expo-font';
-import { COLORS } from "./constants";
+import { COLORS, SIZES } from "./constants";
+import { Button, Text, TouchableOpacity } from "react-native";
 
 // import existing db
 import * as FileSystem from 'expo-file-system';
@@ -80,7 +81,24 @@ const App = () => {
             headerTitle: getHeaderTitle(route)
           })}
         />
-        <Stack.Screen name="Workout" component={Workout} />
+        
+        <Stack.Screen
+          name="Workout"
+          component={Workout} 
+          options={({ route }) => ({ 
+            title: route.params.name,
+            headerRight: () => (
+              // <Button
+              //   onPress={() => alert('This is a button!')}
+              //   title="저장"
+              //   color="red"
+              // />
+              <TouchableOpacity onPress={()=>alert('저장 누름')}>
+                <Text style={{color:COLORS.primary, fontSize:SIZES.h4, marginRight:SIZES.padding}}>저장</Text>
+              </TouchableOpacity>
+            )
+          })}
+          />
         <Stack.Screen name="Details" component={Details} />
 
         <Stack.Screen name="HowToUse" component={HowToUse} />
