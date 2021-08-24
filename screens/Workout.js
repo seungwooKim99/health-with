@@ -8,9 +8,13 @@ import Line2 from '../components/Line2';
 import Line1 from '../components/Line1';
 import { FontAwesome } from '@expo/vector-icons';
 
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
+
 const Workout = ({ route }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [bottomSheetOpened,setBottomSheetOpened] = useState(false)
   
     // 임시
     const [DATA,setDATA] = useState([
@@ -19,6 +23,12 @@ const Workout = ({ route }) => {
             tag:[{name:'',color:''}],
             data:[{rep:'',weight:'',time:''}]
         }
+    ])
+    const [AllTag,setAllTag] = useState([
+        {name:'등',color:COLORS.tag_darkblue},
+        {name:'가슴',color:COLORS.tag_green},
+        {name:'어깨',color:COLORS.tag_pink},
+        {name:'하체',color:COLORS.tag_purple}
     ])
     // const [DATA,setDATA] = useState([
     //     {
@@ -52,11 +62,6 @@ const Workout = ({ route }) => {
         console.log('fetchData')
     }
 
-    const titleHandler = (t) => {
-        onChangeText(value)
-        console.log(t)
-    }
-
     useEffect(()=> {
         // 처음 마운트 되었을 때 넘어온 id로 local storage에서 get.
         const {itemId} = route.params;
@@ -76,15 +81,128 @@ const Workout = ({ route }) => {
         }
     }, []);
 
+    function handleTagPressed(index){
+        console.log(index)
+        // DATA 인덱스 찾기
+        // DATA 태그 안에 데이터 넣기
+    }
+
     function handelTitle (event,index){
         let temp = [...DATA];
         temp[index] = {...temp[index], title: event};
         setDATA(temp)
     }
-    function handleWeight (event,index){
+    function handleWeight (event,innerindex,index){
         let temp = [...DATA];
-        temp[index] = {...temp[index], title: event};
+        temp[index].data[innerindex] = {...temp[index].data[innerindex], weight: event};
         setDATA(temp)
+    }
+    function handleReps (event,innerindex,index){
+        let temp = [...DATA];
+        temp[index].data[innerindex] = {...temp[index].data[innerindex], rep: event};
+        setDATA(temp)
+    }
+
+    // useEffect(()=>{
+    //     if (bottomSheetOpened === true){
+    //         //change background color
+    //         console.log('opened!')
+    //         let backgroundColor = 'red'
+    //         styles.container.backgroundColor = backgroundColor
+    //     }else{
+    //         console.log('closed!')
+    //         let backgroundColor = 'blue'
+    //         styles.container.backgroundColor = backgroundColor
+    //     }
+    // },[bottomSheetOpened])
+
+    function bottomSheetController (){
+        setBottomSheetOpened(!bottomSheetOpened)
+    }
+
+    const renderTag = () => (
+        <View style={styles.tagContainer}>
+            <View style={styles.tagTitleContainer}>
+                <Text style={styles.title}>태그 목록</Text>
+                <View style={{flexDirection:'row',paddingTop:SIZES.padding2}}>
+                    {
+                    AllTag.map((d,i)=>(
+                        <TouchableOpacity key={i} onPress={()=>{
+                            handleTagPressed(i)
+                        }}>
+                        <Tag name={d.name} color={d.color}></Tag>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+            </View>
+            <Line3/>
+
+            <View style={styles.tagTitleContainer}>
+                <Text style={styles.title}>선택된 태그</Text>    
+            </View>
+            <Line3/>
+
+            <View style={styles.tagTitleContainer}>
+                <Text style={styles.title}>태그 관리</Text>    
+            </View>
+        </View>
+    )
+    
+    const TagSheet = React.useRef(null);
+
+    function rendersets(item,innerindex,index){
+        return(
+            <View key={innerindex} style={styles.rowcontainer}>
+                <View style={{flexDirection:'row', alignItems:'center'}}>
+                    <FontAwesome
+                    name="arrow-right"
+                    backgroundColor={COLORS.transparent}
+                    color={COLORS.primary}
+                    style={{transform: [{ scaleX: 1.2 }, { scaleY: 1 }]}}
+                    />
+                    <Text style={[styles.text,{marginLeft:SIZES.padding2*2}]}>1세트</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <View style={{alignItems:'center',marginRight:SIZES.padding}}>
+                    <TextInput
+                        style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
+                        onChangeText={(event)=>handleWeight(event,innerindex,index)}
+                        value={DATA[index].data[innerindex].weight}
+                        // onEndEditing={()=>onEndEditing()}
+                        autoCompleteType='off'
+                        placeholder='  '
+                        autoCorrect={false}
+                    />
+                    <Line1/>
+                    </View>
+                    <Text style={styles.text}>kg</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <View style={{alignItems:'center',marginRight:SIZES.padding}}>
+                    <TextInput
+                        style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
+                        onChangeText={(event)=>handleReps(event,innerindex,index)}
+                        value={DATA[index].data[innerindex].rep}
+                        // onEndEditing={()=>onEndEditing()}
+                        autoCompleteType='off'
+                        placeholder='  '
+                        autoCorrect={false}
+                    />
+                    <Line1/>
+                    </View>
+                    <Text style={styles.text}>회</Text>
+                </View>
+                <TouchableOpacity><Text style={{color:COLORS.primary, fontSize:SIZES.body1,fontFamily:'RobotoBold',marginRight:'3%',marginBottom:3}}>-</Text></TouchableOpacity>
+            </View>
+        )
+    }
+
+    function renderTagPlus(data,index){
+        return(
+            <TouchableOpacity key={index} onPress={()=>TagSheet.current.snapTo(0)}>
+                <Tag name='+ 태그추가' color={COLORS.primary}></Tag>
+            </TouchableOpacity>
+        )
     }
 
     function renderHeader(index){
@@ -101,7 +219,9 @@ const Workout = ({ route }) => {
                         autoCompleteType='off'
                         autoCorrect={false}
                     />
-                    <TouchableOpacity><Tag name='+ 태그추가' color={COLORS.primary}></Tag></TouchableOpacity>
+                    {
+                        DATA.map((data,index)=>renderTagPlus(data,index))
+                    }
                 </View>
                 <Line2/>
             </>
@@ -109,7 +229,7 @@ const Workout = ({ route }) => {
     }
 
     function renderBody(index){
-        console.log(DATA)
+        //console.log(DATA)
         return(
             <>
             <View style={{margin:'3%'}}>
@@ -125,52 +245,9 @@ const Workout = ({ route }) => {
                         style={{transform: [{ scaleX: .8 }, { scaleY: .8 }]}}
                     />
                 </View>
-
-                <View style={styles.rowcontainer}>
-                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                        <FontAwesome
-                        name="arrow-right"
-                        backgroundColor={COLORS.transparent}
-                        color={COLORS.primary}
-                        style={{transform: [{ scaleX: 1.2 }, { scaleY: 1 }]}}
-                        />
-                        <Text style={[styles.text,{marginLeft:SIZES.padding2*2}]}>1세트</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'center',marginRight:SIZES.padding}}>
-                        <TextInput
-                            style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
-                            onChangeText={(event)=>handelTitle(event,index)}
-                            value={DATA[index].title}
-                            autoFocus={true}
-                            
-                            // onEndEditing={()=>onEndEditing()}
-                            autoCompleteType='off'
-                            autoCorrect={false}
-                        />
-                        <Line1/>
-                        </View>
-                        <Text style={styles.text}>kg</Text>
-                    </View>
-                    <View style={{flexDirection:'row'}}>
-                        <View style={{alignItems:'center',marginRight:SIZES.padding}}>
-                        <TextInput
-                            style={{ fontSize:SIZES.body3,fontFamily:'RobotoBold'}}
-                            onChangeText={(event)=>handelTitle(event,index)}
-                            value={DATA[index].title}
-                            autoFocus={true}
-                            
-                            // onEndEditing={()=>onEndEditing()}
-                            autoCompleteType='off'
-                            autoCorrect={false}
-                        />
-                        <Line1/>
-                        </View>
-                        <Text style={styles.text}>회</Text>
-                    </View>
-                    <TouchableOpacity><Text style={{color:COLORS.primary, fontSize:SIZES.body1,fontFamily:'RobotoBold',marginRight:'3%',marginBottom:3}}>-</Text></TouchableOpacity>
-                </View>
-
+                {
+                    DATA[index].data.map((item,innerindex)=>rendersets(item,innerindex,index))
+                }
                 <View style={{flexDirection:'row', alignItems:'center',marginTop:SIZES.padding}}>
                     <FontAwesome
                     name="plus"
@@ -200,7 +277,20 @@ const Workout = ({ route }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <>{bottomSheetOpened?
+            <SafeAreaView style={{flex:1,backgroundColor:'#E8E8E8'}}>
+                <ScrollView>
+                    <View style={{margin:'5%',}}>
+                        {
+                            DATA.map((data,index)=>renderForm(data,index))
+                        }
+                        {/* {renderForm('','')}
+                        {renderForm('','')} */}
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+            :
+            <SafeAreaView style={{flex:1}}>
             <ScrollView>
                 <View style={{margin:'5%',}}>
                     {
@@ -210,13 +300,23 @@ const Workout = ({ route }) => {
                     {renderForm('','')} */}
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView>}
+            <BottomSheet
+                ref={TagSheet}
+                snapPoints={[600, 0, 0]}
+                borderRadius={20}
+                renderContent={renderTag}
+                initialSnap={1}
+                onOpenStart={bottomSheetController}
+                onCloseEnd={bottomSheetController}             
+            />
+        </>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     primary: {
         flex: 1,
@@ -237,9 +337,23 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center'
     },
+    title: {
+        fontSize: SIZES.body3,
+        fontFamily: 'RobotoMedium',
+        paddingRight: SIZES.base
+    },
     text:{
         fontFamily:'RobotoRegular',
         fontSize:SIZES.body3
+    },
+    tagContainer:{
+        backgroundColor: 'white',
+        padding: SIZES.padding*2,
+        height: 600,
+    },
+    tagTitleContainer:{
+        marginTop:10,
+        marginBottom:10
     }
 })
 

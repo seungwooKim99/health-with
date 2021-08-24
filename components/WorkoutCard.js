@@ -55,7 +55,6 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
                             <Tag key={i} name={d.name} color={d.color}></Tag>
                         ))}
                         </>
-                        {/* <Tag tag={item.tag}></Tag> */}
                     </View>
                     <View
                         style={{

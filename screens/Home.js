@@ -29,7 +29,7 @@ const Home = ( {navigation} ) => {
   const [sessionTitle,setSessionTitle] = useState([
       {
         title: '랫풀다운',
-        tag: [{name:'등',color:COLORS.tag_orange}],
+        tag: [{name:'등',color:COLORS.tag_darkblue}],
       },
       {
         title: '데드리프트',
