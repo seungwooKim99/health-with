@@ -7,6 +7,7 @@ import { COLORS, SIZES } from '../../constants';
 //components
 import Chart from '../../components/Chart';
 import SwitchBtn from '../../components/SwitchBtn';
+import { createWorkout, getWorkout } from '../../service/Workout';
 
 const Tag = ({text, color}) => {
   return (
@@ -40,6 +41,7 @@ export default ({
   page,
   setPage,
   workouts,
+  setWorkouts,
   sessions,
   tags,
   sets,
@@ -65,13 +67,15 @@ export default ({
         </View>
       </View>
       <View>
-        <TouchableOpacity onPress={() => createWorkout('2021-01-01')}>
+        <TouchableOpacity onPress={() => {
+          createWorkout('2021-01-01')
+        }}>
           <Text>Workout 생성 (2021-01-01)</Text>
         </TouchableOpacity>
         <View>
           <Text style={{fontSize: SIZES.h3}}>Workout</Text>
           {
-            workouts && workouts.map(workout => (
+            workouts && Array.isArray(workouts) && workouts.length != 0 && workouts.map(workout => (
               <Text key={workout.id}>
                 {JSON.stringify(workout)}
               </Text>
@@ -81,7 +85,7 @@ export default ({
         <View>
           <Text style={{fontSize: SIZES.h3}}>Session</Text>
           {
-            sessions && sessions.map(session => (
+            sessions && Array.isArray(sessions) && sessions.length != 0 && sessions.map(session => (
               <Text key={session.id}>
                 {JSON.stringify(session)}
               </Text>
@@ -91,7 +95,7 @@ export default ({
         <View>
           <Text style={{fontSize: SIZES.h3}}>Tags</Text>
           {
-            tags && tags.map(tag => (
+            tags && Array.isArray(tags) && tags.length != 0 && tags.map(tag => (
               <Text key={tag.id}>
                 {JSON.stringify(tag)}
               </Text>
@@ -101,9 +105,9 @@ export default ({
         <View>
           <Text style={{fontSize: SIZES.h3}}>Sets</Text>
           {
-            sets && sets.map(set => (
+            sets && Array.isArray(sets) && sets.length != 0 && sets.map(set => (
               <Text key={set.id}>
-                {JSON.stringify(set)}
+                {JSON.stringify(set.weight)}
               </Text>
             ))
           }

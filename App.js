@@ -25,12 +25,6 @@ import {Asset} from 'expo-asset';
 
 const Stack = createStackNavigator();
 
-// import existing db
-import * as FileSystem from 'expo-file-system';
-import {Asset} from 'expo-asset';
-
-const Stack = createStackNavigator();
-
 // header에 탭 이름 가져오는 함수
 function getHeaderTitle(route) {
   // tab navigator의 `route.state` state를 사용한다
