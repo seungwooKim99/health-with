@@ -26,12 +26,13 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
 
     //fetch data only mount - data 바뀔 일이 없음
     useEffect(()=>{
+        console.log('몇번?')
         fetchData(sessionTitle,sessionBody)
     },[])
 
     function rendersets(item) {
         return item.data.map((data,index)=>{
-            console.log(data)
+            //console.log(data)
             return(
                 <View key={index} style={{flexDirection:'row', justifyContent:'space-around'}}>
                     <Text style={styles.text}>{index + 1}세트</Text>
@@ -49,13 +50,17 @@ const WorkoutCard = ({sessionTitle, sessionBody}) => {
                 <TouchableOpacity onPress={onPress} style={styles.item}>
                     <View style={{flexDirection:'row', alignItems:'center'}}>
                         <Text style={styles.title}>{item.title}</Text>
-                        <Tag tag={item.tag}></Tag>
+                        <>{
+                        item.tag.map((d,i)=>(
+                            <Tag key={i} name={d.name} color={d.color}></Tag>
+                        ))}
+                        </>
                     </View>
                     <View
                         style={{
                             height: 1,
                             width: "100%",
-                            backgroundColor: COLORS.gray,
+                            backgroundColor: COLORS.lightGray3,
                             marginTop:SIZES.padding/2
                         }}
                     />
@@ -79,14 +84,14 @@ const styles = StyleSheet.create({
     item: {
       backgroundColor: COLORS.transparent,
       paddingHorizontal: SIZES.padding*2,
-      borderRadius: SIZES.radius,
+      //borderRadius: SIZES.radius,
       marginHorizontal: 10,
       paddingTop:SIZES.base*2
     },
     title: {
       fontSize: SIZES.body3,
       fontFamily: 'RobotoMedium',
-      paddingRight: SIZES.padding
+      paddingRight: SIZES.base
     },
     text: {
         fontSize: SIZES.body3,
