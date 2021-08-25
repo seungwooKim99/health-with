@@ -11,7 +11,7 @@ export default class Set extends BaseModel {
   }
 
   static get tableName() {
-    return 'set'
+    return 'sets'
   }
 
   static get columnMapping() {

@@ -16,8 +16,6 @@ import Workout_Session_Tag from '../../model/Workout_Session_Tag';
 //import { createWorkout, getWorkout } from '../../service/Workout';
 //import { createSession, getSession } from '../../service/Session';
 
-
-
 export default () => {
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -28,20 +26,15 @@ export default () => {
   const [tags, setTags] = useState([])
   const [sets, setSets] = useState([])
 
-  // useEffect(() => {
-  //   const setData = async () => {
-  //     setWorkouts(await Workout.query())
-  //     setSessions(await Session.query())
-  //     setTags(await Tag.query())
-  //     setSets(await Set.query())
-
-  //     //setWorkouts(getWorkout())
-  //     //setSessions(getSession())
-  //     //setTags(await Tag.query())
-  //     //setSets(await Set.query())
-  //   }
-  //   setData()
-  // }, [])
+  useEffect(() => {
+    const setData = async () => {
+      setWorkouts(await Workout.query())
+      setSessions(await Session.query())
+      setTags(await Tag.query())
+      setSets(await Set.query())
+    }
+    setData()
+  }, [])
 
   const createTables = async () => {
     await Session.createTable()
@@ -64,6 +57,7 @@ export default () => {
     await workout.save()
     setWorkouts(await Workout.query())
   }
+  
 
   const createSession = async ({name}) => {
     const props = {
@@ -105,6 +99,7 @@ export default () => {
       page={page}
       setPage={setPage}
       workouts={workouts}
+      setWorkouts={setWorkouts}
       sessions={sessions}
       tags={tags}
       sets={sets}

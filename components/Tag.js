@@ -3,16 +3,6 @@ import { StyleSheet, View, Text, FlatList, Button, ScrollView, TouchableOpacity}
 import { COLORS, SIZES } from "../constants";
 
 const Tag = ({name,color}) => {
-    //console.log(tag)
-    // return tag.map((d,i)=>{
-    //     return(
-    //         <View key={i} style={styles.container}>
-    //             <View style={{backgroundColor:d.color, borderRadius:SIZES.radius}}>
-    //                 <Text style={styles.tag}>{d.name}</Text>
-    //             </View>
-    //         </View>
-    //     )
-    // })
         return(
             <View style={styles.container}>
                 <View style={{backgroundColor:color, borderRadius:SIZES.radius}}>
