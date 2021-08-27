@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Switch } from "react-native";
 import { COLORS, SIZES } from '../../constants';
@@ -11,7 +11,13 @@ import { createWorkout, getWorkout } from '../../service/Workout';
 import Tag from '../../components/Tag'
 import PieChart from '../../components/PieChart';
 
-const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title}) => {
+/*
+const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title, volume, tags, selectedTag, setSelectedTag}) => {
+
+  useEffect(() => {
+    console.log('selected Tag : '+selectedTag)
+  }, [])
+
   return (
     <View style={style.cardContainer}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
@@ -20,7 +26,7 @@ const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title}) => {
       </View>
       {
         page == 0 ? (
-          <Chart />
+          <Chart volume={volume} tags={tags} selectedTag={selectedTag} />
         ) : (
           <PieChart />
         )
@@ -38,14 +44,16 @@ const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title}) => {
           </TouchableOpacity>
         </View>
       <View style={{flexDirection: 'row', padding: SIZES.padding}}>
-        <Tag name={'하체'} color={COLORS.tag_yellow} />
-        <Tag name={'가슴'} color={COLORS.tag_pink} />
-        <Tag name={'코어'} color={COLORS.tag_blue} />
-        <Tag name={'등'} color={COLORS.tag_green} />
+        {
+          tags && tags.map((tag) => (
+            <Tag key={tag.id} name={tag.name} color={COLORS.tag_pink} onPress={setSelectedTag(tag.name)}/>
+          ))
+        }
       </View>
     </View>
   )
 }
+*/
 
 export default ({
   isEnabled,
@@ -65,12 +73,70 @@ export default ({
   calculateVolume,
   test,
   test2,
+  volume,
+  selectedTag,
+  setSelectedTag
 }) => {
+  
+  const ReportCard = ({title}) => {
+    
+    const onPressTagHandler = (name) => {
+      setSelectedTag(name)
+    }
+
+    return (
+      <View style={style.cardContainer}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
+          <Text style={style.cardSubTitle}>{title}</Text>
+          <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
+        </View>
+        {
+          page == 0 ? (
+            <Chart volume={volume} tags={tags} selectedTag={selectedTag} />
+          ) : (
+            <PieChart />
+          )
+        }
+        <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
+            <TouchableOpacity onPress={() => setPage(0)}>
+              <MaterialIcons name="arrow-back-ios" size={28} color={COLORS.primary} />
+            </TouchableOpacity>
+            <View style={{justifyContent:'center', flexDirection:'row'}}>
+              <Entypo name="dot-single" size={30} color={page == 0 ? COLORS.primary : COLORS.gray} />
+              <Entypo name="dot-single" size={30} color={page == 1 ? COLORS.primary : COLORS.gray} />
+            </View>
+            <TouchableOpacity onPress={() => setPage(1)}>
+              <MaterialIcons name="arrow-forward-ios" size={28} color={COLORS.primary} />
+            </TouchableOpacity>
+          </View>
+        <View style={{flexDirection: 'row', padding: SIZES.padding}}>
+          {
+            tags && tags.map((tag) => 
+              (
+              <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? COLORS.tag_pink : COLORS.tag_gray} onPress={onPressTagHandler} />
+            ))
+          }
+        </View>
+      </View>
+    )
+  }
+
+
   return (
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
         <Text style={style.cardTitle}>운동 부위별 분석</Text>
-        <ReportCard page={page} setPage={setPage} isEnabled={isEnabled} setIsEnabled={setIsEnabled} title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'} />
+        <ReportCard
+          tags={tags}
+          volume={volume}
+          page={page}
+          setPage={setPage}
+          isEnabled={isEnabled} 
+          etIsEnabled={setIsEnabled}
+          title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+        />
         <TouchableOpacity onPress={test}><Text>test</Text></TouchableOpacity>
         <TouchableOpacity onPress={test2}><Text>test2</Text></TouchableOpacity>
       </View>

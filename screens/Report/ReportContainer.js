@@ -22,6 +22,8 @@ import { GET_SESSION_SETS, GET_TOTAL_DATA, GET_WORKOUT_SESSION_TAG, GET_WORKOUT_
 
 export default () => {
   const [volume, setVolume] = useState({})
+  const [selectedTag, setSelectedTag] = useState(null)
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   const [page, setPage] = useState(0);
@@ -35,11 +37,19 @@ export default () => {
     const setData = async () => {
       setWorkouts(await Workout.query())
       setSessions(await Session.query())
-      setTags(await Tag.query())
+      const tags = await Tag.query()
+      setTags(tags)
       setSets(await Set.query())
+      setSelectedTag(tags[0].name)
+      //
+      
     }
     setData()
   }, [])
+
+  useEffect(() => {
+    fetchDataAndCalVolume()
+  }, [volume])
 
   const createTables = async () => {
     await Session.createTable()
@@ -128,7 +138,6 @@ export default () => {
     }
   }, [tags])
 
-  const [DATA, setDATA] = useState([])
 
   const test = () => {
     console.log('This is test function')
@@ -150,7 +159,8 @@ export default () => {
     })
   }
 
-  const test2 = () => {
+  const fetchDataAndCalVolume = () => {
+    console.log('fetchDataAndCalVolume')
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
     databaseLayer.executeSql(GET_WORKOUT_TAG_SETS)
     .then((response) => {
@@ -164,25 +174,11 @@ export default () => {
         volumeDict[day][tag] += vol
       })
       setVolume(volumeDict)
-      console.log(volumeDict)
-
     })
-    
-
-    
-    /*
-    let prevVolume = volume
-    DATA.map((data) => {
-      let tag = data.name
-      // 유산소는 분기처리 안 함
-      let volume = data.rep*data.weight
-      let date = data.date
-      prevVolume[tag+'_date'].push(date)
-      prevVolume[tag+'_volume'].push(date)
+    .catch((err) => {
+      console.log(err )
     })
-    */
   }
-
 
   return (
     <ReportPresenter
@@ -202,7 +198,10 @@ export default () => {
       createSet={createSet}
       calculateVolume={calculateVolume}
       test={test}
-      test2={test2}
+      test2={fetchDataAndCalVolume}
+      volume={volume}
+      selectedTag={selectedTag}
+      setSelectedTag={setSelectedTag}
     />
   )
 }
