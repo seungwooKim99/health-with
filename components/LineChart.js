@@ -21,7 +21,7 @@ export default Chart = ({labels, data, isRecent}) => {
             }]
           }}
           width={Dimensions.get('window').width}
-          height={Dimensions.get('window').height*0.4}
+          height={220}
           chartConfig={{
             backgroundColor: '#cs2d1d',
             backgroundGradientFrom: '#ffffff',
@@ -42,7 +42,7 @@ export default Chart = ({labels, data, isRecent}) => {
             marginVertical: 0,
             borderRadius:16,
           }}
-          withHorizontalLabels={true}
+          withHorizontalLabels={false}
           withVerticalLines={false}
           withHorizontalLines={false}
           withOuterLines={false}

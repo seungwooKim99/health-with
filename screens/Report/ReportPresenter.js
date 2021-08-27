@@ -1,34 +1,47 @@
 import React from 'react';
 import { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Switch } from "react-native";
-import { LineChart } from 'react-native-chart-kit';
 import { COLORS, SIZES } from '../../constants';
+import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
 //components
-import Chart from '../../components/Chart';
+import Chart from '../../components/LineChart';
 import SwitchBtn from '../../components/SwitchBtn';
+import { createWorkout, getWorkout } from '../../service/Workout';
+import Tag from '../../components/Tag'
+import PieChart from '../../components/PieChart';
 
-const Tag = ({text, color}) => {
-  return (
-    <TouchableOpacity style={{backgroundColor: color, borderRadius: SIZES.radius, margin: 4, padding: 4}}>
-      <Text style={{fontSize: SIZES.h4, color: '#ffffff', fontWeight: '400'}}>{text}</Text>
-    </TouchableOpacity>
-  )
-}
-
-const ReportCard = ({isEnabled, setIsEnabled, title}) => {
+const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title}) => {
   return (
     <View style={style.cardContainer}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
         <Text style={style.cardSubTitle}>{title}</Text>
         <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
       </View>
-      <Chart />
+      {
+        page == 0 ? (
+          <Chart />
+        ) : (
+          <PieChart />
+        )
+      }
+      <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
+          <TouchableOpacity onPress={() => setPage(0)}>
+            <MaterialIcons name="arrow-back-ios" size={28} color={COLORS.primary} />
+          </TouchableOpacity>
+          <View style={{justifyContent:'center', flexDirection:'row'}}>
+            <Entypo name="dot-single" size={30} color={page == 0 ? COLORS.primary : COLORS.gray} />
+            <Entypo name="dot-single" size={30} color={page == 1 ? COLORS.primary : COLORS.gray} />
+          </View>
+          <TouchableOpacity onPress={() => setPage(1)}>
+            <MaterialIcons name="arrow-forward-ios" size={28} color={COLORS.primary} />
+          </TouchableOpacity>
+        </View>
       <View style={{flexDirection: 'row', padding: SIZES.padding}}>
-        <Tag text={'하체'} color={COLORS.tag_yellow} />
-        <Tag text={'가슴'} color={COLORS.tag_pink} />
-        <Tag text={'코어'} color={COLORS.tag_blue} />
-        <Tag text={'등'} color={COLORS.tag_green} />
+        <Tag name={'하체'} color={COLORS.tag_yellow} />
+        <Tag name={'가슴'} color={COLORS.tag_pink} />
+        <Tag name={'코어'} color={COLORS.tag_blue} />
+        <Tag name={'등'} color={COLORS.tag_green} />
       </View>
     </View>
   )
@@ -40,6 +53,7 @@ export default ({
   page,
   setPage,
   workouts,
+  setWorkouts,
   sessions,
   tags,
   sets,
@@ -53,61 +67,7 @@ export default ({
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
         <Text style={style.cardTitle}>운동 부위별 분석</Text>
-        <ReportCard isEnabled={isEnabled} setIsEnabled={setIsEnabled} title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'} />
-        <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
-          <TouchableOpacity onPress={() => setPage(0)}>
-            <Text style={{fontSize: SIZES.h4}}>prev</Text>
-          </TouchableOpacity>
-          <Text style={{fontSize: SIZES.h4}}>{page+1}</Text>
-          <TouchableOpacity onPress={() => setPage(1)}>
-            <Text style={{fontSize: SIZES.h4}}>next</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View>
-        <TouchableOpacity onPress={() => createWorkout('2021-01-01')}>
-          <Text>Workout 생성 (2021-01-01)</Text>
-        </TouchableOpacity>
-        <View>
-          <Text style={{fontSize: SIZES.h3}}>Workout</Text>
-          {
-            workouts && workouts.map(workout => (
-              <Text key={workout.id}>
-                {JSON.stringify(workout)}
-              </Text>
-            ))
-          }
-        </View>
-        <View>
-          <Text style={{fontSize: SIZES.h3}}>Session</Text>
-          {
-            sessions && sessions.map(session => (
-              <Text key={session.id}>
-                {JSON.stringify(session)}
-              </Text>
-            ))
-          }
-        </View>
-        <View>
-          <Text style={{fontSize: SIZES.h3}}>Tags</Text>
-          {
-            tags && tags.map(tag => (
-              <Text key={tag.id}>
-                {JSON.stringify(tag)}
-              </Text>
-            ))
-          }
-        </View>
-        <View>
-          <Text style={{fontSize: SIZES.h3}}>Sets</Text>
-          {
-            sets && sets.map(set => (
-              <Text key={set.id}>
-                {JSON.stringify(set)}
-              </Text>
-            ))
-          }
-        </View>
+        <ReportCard page={page} setPage={setPage} isEnabled={isEnabled} setIsEnabled={setIsEnabled} title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'} />
       </View>
     </View>
   )
@@ -121,6 +81,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ffffff',
     borderRadius: 16,
+    padding: SIZES.padding,
   },
   cardTitle:{
     fontSize: SIZES.h3,
