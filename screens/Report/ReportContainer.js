@@ -32,6 +32,7 @@ export default () => {
       setSessions(await Session.query())
       setTags(await Tag.query())
       setSets(await Set.query())
+      //
     }
     setData()
   }, [])
