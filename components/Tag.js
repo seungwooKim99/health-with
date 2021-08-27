@@ -4,11 +4,11 @@ import { COLORS, SIZES } from "../constants";
 
 const Tag = ({name,color}) => {
         return(
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container}>
                 <View style={{backgroundColor:color, borderRadius:SIZES.radius}}>
                     <Text style={styles.tag}>{name}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
     )
 }
 

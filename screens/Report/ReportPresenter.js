@@ -61,13 +61,18 @@ export default ({
   createWorkout,
   createSession,
   createTag,
-  createSet
+  createSet,
+  calculateVolume,
+  test,
+  test2,
 }) => {
   return (
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
         <Text style={style.cardTitle}>운동 부위별 분석</Text>
         <ReportCard page={page} setPage={setPage} isEnabled={isEnabled} setIsEnabled={setIsEnabled} title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'} />
+        <TouchableOpacity onPress={test}><Text>test</Text></TouchableOpacity>
+        <TouchableOpacity onPress={test2}><Text>test2</Text></TouchableOpacity>
       </View>
     </View>
   )
