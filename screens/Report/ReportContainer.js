@@ -47,9 +47,11 @@ export default () => {
     setData()
   }, [])
 
+  /*
   useEffect(() => {
     fetchDataAndCalVolume()
   }, [volume])
+*/
 
   const createTables = async () => {
     await Session.createTable()
@@ -120,16 +122,35 @@ export default () => {
     })
   }
   const setTagsInVolumeState = () => {
-    let prevVolume = {}
-    tags.map((tag) => {
-      prevVolume[tag.name] = 0
-    })
     let totalVolume = {}
     workouts.map((workout) => {
+      let prevVolume = {}
+      tags.map((tag) => {
+        prevVolume[tag.name] = 0
+      })
       totalVolume[workout.date] = prevVolume
     })
-    setVolume(totalVolume)
-    console.log(totalVolume)
+
+    //
+    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
+    databaseLayer.executeSql(GET_WORKOUT_TAG_SETS)
+    .then((response) => {
+      const responseList = response.rows
+      let volumeDict = totalVolume
+      responseList.map((data) => {
+        let day = data.date
+        let tag = data.name
+        let vol = data.weight*data.rep
+
+        volumeDict[day][tag] += vol
+      })
+      setVolume(totalVolume)
+    })
+    .catch((err) => {
+      console.log(err )
+    })
+
+    //setVolume(totalVolume)
   }
 
   useEffect(() => {
@@ -149,10 +170,10 @@ export default () => {
       responseList.map((data) => {
         console.log(data)
       })
-      console.log(`data length : ${responseList.length}`)
+      //console.log(`data length : ${responseList.length}`)
       setDATA(responseList)
-      console.log('volume')
-      console.log(volume)
+      //console.log('volume')
+      //console.log(volume)
     })
     .catch((err) => {
       console.log(err)
@@ -166,12 +187,18 @@ export default () => {
     .then((response) => {
       const responseList = response.rows
       let volumeDict = volume
+      //console.log('This is Volume Dict')
+      //console.log(volumeDict)
+      //console.log('---------------')
       responseList.map((data) => {
         let day = data.date
         let tag = data.name
         let vol = data.weight*data.rep
 
+        //console.log(`ref => day: ${day} / tag: ${tag}`)
         volumeDict[day][tag] += vol
+        //console.log(volumeDict[day][tag])
+        //console.log(volumeDict)
       })
       setVolume(volumeDict)
     })

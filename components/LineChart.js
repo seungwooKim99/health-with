@@ -10,16 +10,24 @@ export default Chart = ({isRecent, volume, tags, selectedTag}) => {
   const [data, setData] = useState([])
 
   const setTotalLabelAndData = () => {
-    console.log('hello')
+    console.log('setTotalLabelAndData')
     console.log(volume)
     const totalDate = Object.keys(volume)
+    let dataList = []
+    let labelsList = []
     totalDate.map((date) => {
       let elem = volume[date]
       if (selectedTag in elem) {
-        setData((prev) => [...prev, elem[selectedTag]])
-        setLabels((prev) => [...prev, date])
+        //setData((prev) => [...prev, elem[selectedTag]])
+        //setLabels((prev) => [...prev, date])
+        if (elem[selectedTag] != 0) {
+          dataList.push(elem[selectedTag])
+          labelsList.push(date)
+        }
       }
     })
+    setData(dataList)
+    setLabels(labelsList)
   }
 
   useState(() => {
@@ -28,7 +36,7 @@ export default Chart = ({isRecent, volume, tags, selectedTag}) => {
 
   return (
     <View style={{alignItems:'center'}}>
-      {data.length != 0 && labels.length != 0 && data[0] != 0 && (
+      { data && labels && data.length != 0 && labels.length != 0 && (
       <LineChart
           data={{
             labels: labels,
@@ -66,8 +74,11 @@ export default Chart = ({isRecent, volume, tags, selectedTag}) => {
         />
       )}
       {
-        data.length == 0 && <Text>Hi</Text>
-      }
+        data.length == 0 && (
+        <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>데이터가 없어요!</Text>
+        </View>
+        )}
     </View>
   )
 }
