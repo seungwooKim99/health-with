@@ -71,11 +71,10 @@ export default ({
   createTag,
   createSet,
   calculateVolume,
-  test,
-  test2,
   volume,
   selectedTag,
-  setSelectedTag
+  setSelectedTag,
+  frequency
 }) => {
   
   const ReportCard = ({title}) => {
@@ -86,7 +85,7 @@ export default ({
 
     return (
       <View style={style.cardContainer}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingRight: 0}}>
           <Text style={style.cardSubTitle}>{title}</Text>
           <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
         </View>
@@ -94,7 +93,7 @@ export default ({
           page == 0 ? (
             <Chart volume={volume} tags={tags} selectedTag={selectedTag} />
           ) : (
-            <PieChart />
+            <PieChart frequency={frequency} />
           )
         }
         <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
@@ -111,9 +110,9 @@ export default ({
           </View>
         <View style={{flexDirection: 'row', padding: SIZES.padding}}>
           {
-            tags && tags.map((tag) => 
+            page == 0 && tags && tags.map((tag) => 
               (
-              <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? COLORS.tag_pink : COLORS.tag_gray} onPress={onPressTagHandler} />
+              <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.tag_gray} onPress={onPressTagHandler} />
             ))
           }
         </View>
@@ -137,8 +136,7 @@ export default ({
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
         />
-        <TouchableOpacity onPress={test}><Text>test</Text></TouchableOpacity>
-        <TouchableOpacity onPress={test2}><Text>test2</Text></TouchableOpacity>
+
       </View>
     </View>
   )
@@ -152,12 +150,12 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ffffff',
     borderRadius: 16,
-    padding: SIZES.padding,
+    padding: SIZES.padding2,
   },
   cardTitle:{
     fontSize: SIZES.h3,
     fontWeight: '600',
-    margin: SIZES.padding,
+    margin: SIZES.padding3,
   },
   cardSubTitle:{
     fontSize: SIZES.h4,

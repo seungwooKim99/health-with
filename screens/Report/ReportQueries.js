@@ -40,6 +40,14 @@ export const GET_WORKOUT_TAG_SETS = `
   JOIN sets ON  session_set.set_id = sets.id
 `
 
+export const GET_WORKOUT_TAG = `
+  SELECT  DISTINCT workout.date, tag.name, tag.color
+  FROM workout
+  JOIN workout_session_tag
+  ON workout.id = workout_session_tag.workout_id
+  JOIN tag
+  ON workout_session_tag.tag_id = tag.id
+`
 
 /*
 `

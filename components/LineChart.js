@@ -10,8 +10,7 @@ export default Chart = ({isRecent, volume, tags, selectedTag}) => {
   const [data, setData] = useState([])
 
   const setTotalLabelAndData = () => {
-    console.log('setTotalLabelAndData')
-    console.log(volume)
+
     const totalDate = Object.keys(volume)
     let dataList = []
     let labelsList = []

@@ -17,11 +17,13 @@ import Workout from '../../model/Workout';
 import Workout_Session_Tag from '../../model/Workout_Session_Tag';
 
 //queries
-import { GET_SESSION_SETS, GET_TOTAL_DATA, GET_WORKOUT_SESSION_TAG, GET_WORKOUT_TAG_SETS } from './ReportQueries';
+import { GET_WORKOUT_TAG_SETS, GET_WORKOUT_TAG } from './ReportQueries';
+import { COLORS, SIZES } from '../../constants';
 
 
 export default () => {
   const [volume, setVolume] = useState({})
+  const [frequency, setFrequency] = useState([])
   const [selectedTag, setSelectedTag] = useState(null)
 
   const [isEnabled, setIsEnabled] = useState(false);
@@ -111,17 +113,13 @@ export default () => {
 
   
   //
-  const isObjectEmpty = (obj) => {
-    return Object.keys(obj).length === 0;
-  }
-
   const calculateVolume = () => {
     const workoutList = workouts
     workoutList.map((workout) => {
       
     })
   }
-  const setTagsInVolumeState = () => {
+  const setVolumeWithTags = () => {
     let totalVolume = {}
     workouts.map((workout) => {
       let prevVolume = {}
@@ -131,7 +129,6 @@ export default () => {
       totalVolume[workout.date] = prevVolume
     })
 
-    //
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
     databaseLayer.executeSql(GET_WORKOUT_TAG_SETS)
     .then((response) => {
@@ -149,37 +146,52 @@ export default () => {
     .catch((err) => {
       console.log(err )
     })
-
-    //setVolume(totalVolume)
   }
 
   useEffect(() => {
     if (tags.length != 0){
-      setTagsInVolumeState()
+      setVolumeWithTags()
+      setFrequencyWithVolume()
     }
   }, [tags])
 
-
-  const test = () => {
-    console.log('This is test function')
-    // You can test here
+  const setFrequencyWithVolume = () => {
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
-    databaseLayer.executeSql(GET_TOTAL_DATA)
+    databaseLayer.executeSql(GET_WORKOUT_TAG)
     .then((response) => {
       const responseList = response.rows
+      let frequencyDict = {}
       responseList.map((data) => {
-        console.log(data)
+        let tag = data.name
+        let color = data.color
+        if (tag in frequencyDict){
+          frequencyDict[tag]['value'] += 1
+          console.log(frequencyDict)
+        }
+        else {
+          frequencyDict[tag] = {'value': 1, 'color': color}
+          console.log(frequencyDict)
+        }
       })
-      //console.log(`data length : ${responseList.length}`)
-      setDATA(responseList)
-      //console.log('volume')
-      //console.log(volume)
+      let frequencyList = []
+      frequencyTagsList = Object.keys(frequencyDict)
+      frequencyTagsList.map((tag) => {
+        let elem = {}
+        elem['name'] = `${tag} (${frequencyDict[tag]['value']}회)`
+        elem['freq'] = frequencyDict[tag]['value']
+        elem['color'] = frequencyDict[tag]['color']
+        elem['legendFontColor'] = '#3b3b3b'
+        elem['legendFontSize'] = SIZES.body3
+        frequencyList.push(elem)
+      })
+      setFrequency(frequencyList)
     })
     .catch((err) => {
       console.log(err)
     })
   }
 
+  /*
   const fetchDataAndCalVolume = () => {
     console.log('fetchDataAndCalVolume')
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
@@ -206,6 +218,7 @@ export default () => {
       console.log(err )
     })
   }
+  */
 
   return (
     <ReportPresenter
@@ -224,11 +237,10 @@ export default () => {
       createTag={createTag}
       createSet={createSet}
       calculateVolume={calculateVolume}
-      test={test}
-      test2={fetchDataAndCalVolume}
       volume={volume}
       selectedTag={selectedTag}
       setSelectedTag={setSelectedTag}
+      frequency={frequency}
     />
   )
 }
