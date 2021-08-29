@@ -52,7 +52,7 @@ export default () => {
     if (tags.length != 0){
       setVolumeWithTags()
       setFrequencyWithVolume()
-      //setLoading(false)
+      setLoading(false)
     }
   }, [tags])
 
