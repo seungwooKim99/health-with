@@ -10,6 +10,7 @@ import SwitchBtn from '../../components/SwitchBtn';
 import { createWorkout, getWorkout } from '../../service/Workout';
 import Tag from '../../components/Tag'
 import PieChart from '../../components/PieChart';
+import Spinner from '../../components/Spinner';
 
 /*
 const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title, volume, tags, selectedTag, setSelectedTag}) => {
@@ -56,6 +57,7 @@ const ReportCard = ({page, setPage, isEnabled, setIsEnabled, title, volume, tags
 */
 
 export default ({
+  loading,
   isEnabled,
   setIsEnabled,
   page,
@@ -85,37 +87,45 @@ export default ({
 
     return (
       <View style={style.cardContainer}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingRight: 0}}>
-          <Text style={style.cardSubTitle}>{title}</Text>
-          <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
-        </View>
         {
-          page == 0 ? (
-            <Chart volume={volume} tags={tags} selectedTag={selectedTag} />
+          loading ? (
+            <Spinner />
           ) : (
-            <PieChart frequency={frequency} />
+            <>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingRight: 0}}>
+              <Text style={style.cardSubTitle}>{title}</Text>
+              <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
+            </View>
+            {
+              page == 0 ? (
+                <Chart volume={volume} tags={tags} selectedTag={selectedTag} />
+              ) : (
+                <PieChart frequency={frequency} />
+              )
+            }
+            <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
+                <TouchableOpacity onPress={() => setPage(0)}>
+                  <MaterialIcons name="arrow-back-ios" size={28} color={COLORS.primary} />
+                </TouchableOpacity>
+                <View style={{justifyContent:'center', flexDirection:'row'}}>
+                  <Entypo name="dot-single" size={30} color={page == 0 ? COLORS.primary : COLORS.gray} />
+                  <Entypo name="dot-single" size={30} color={page == 1 ? COLORS.primary : COLORS.gray} />
+                </View>
+                <TouchableOpacity onPress={() => setPage(1)}>
+                  <MaterialIcons name="arrow-forward-ios" size={28} color={COLORS.primary} />
+                </TouchableOpacity>
+              </View>
+            <View style={{flexDirection: 'row', padding: SIZES.padding}}>
+              {
+                page == 0 && tags && tags.map((tag) => 
+                  (
+                  <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.tag_gray} onPress={onPressTagHandler} />
+                ))
+              }
+            </View>
+            </>
           )
         }
-        <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
-            <TouchableOpacity onPress={() => setPage(0)}>
-              <MaterialIcons name="arrow-back-ios" size={28} color={COLORS.primary} />
-            </TouchableOpacity>
-            <View style={{justifyContent:'center', flexDirection:'row'}}>
-              <Entypo name="dot-single" size={30} color={page == 0 ? COLORS.primary : COLORS.gray} />
-              <Entypo name="dot-single" size={30} color={page == 1 ? COLORS.primary : COLORS.gray} />
-            </View>
-            <TouchableOpacity onPress={() => setPage(1)}>
-              <MaterialIcons name="arrow-forward-ios" size={28} color={COLORS.primary} />
-            </TouchableOpacity>
-          </View>
-        <View style={{flexDirection: 'row', padding: SIZES.padding}}>
-          {
-            page == 0 && tags && tags.map((tag) => 
-              (
-              <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.tag_gray} onPress={onPressTagHandler} />
-            ))
-          }
-        </View>
       </View>
     )
   }
@@ -125,18 +135,18 @@ export default ({
     <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
       <View style={style.container}>
         <Text style={style.cardTitle}>운동 부위별 분석</Text>
-        <ReportCard
-          tags={tags}
-          volume={volume}
-          page={page}
-          setPage={setPage}
-          isEnabled={isEnabled} 
-          etIsEnabled={setIsEnabled}
-          title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
-          selectedTag={selectedTag}
-          setSelectedTag={setSelectedTag}
-        />
-
+            <ReportCard
+              loading={loading}
+              tags={tags}
+              volume={volume}
+              page={page}
+              setPage={setPage}
+              isEnabled={isEnabled} 
+              etIsEnabled={setIsEnabled}
+              title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
+              selectedTag={selectedTag}
+              setSelectedTag={setSelectedTag}
+            />
       </View>
     </View>
   )

@@ -22,6 +22,7 @@ import { COLORS, SIZES } from '../../constants';
 
 
 export default () => {
+  const [loading, setLoading] = useState(true)
   const [volume, setVolume] = useState({})
   const [frequency, setFrequency] = useState([])
   const [selectedTag, setSelectedTag] = useState(null)
@@ -152,6 +153,7 @@ export default () => {
     if (tags.length != 0){
       setVolumeWithTags()
       setFrequencyWithVolume()
+      setLoading(false)
     }
   }, [tags])
 
@@ -222,6 +224,7 @@ export default () => {
 
   return (
     <ReportPresenter
+      loading={loading}
       isEnabled={isEnabled}
       setIsEnabled={setIsEnabled}
       page={page}
