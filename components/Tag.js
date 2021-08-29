@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import { StyleSheet, View, Text, FlatList, Button, ScrollView, TouchableOpacity} from "react-native";
 import { COLORS, SIZES } from "../constants";
 
-const Tag = ({name,color, onPress}) => {
+const Tag = ({name,color}) => {
         return(
-            <TouchableOpacity style={styles.container} onPress={() => onPress(name)}>
+            <View style={styles.container}>
                 <View style={{backgroundColor:color, borderRadius:SIZES.radius}}>
                     <Text style={styles.tag}>{name}</Text>
                 </View>
-            </TouchableOpacity>
+            </View>
     )
 }
 
