@@ -43,83 +43,19 @@ export default () => {
       const tags = await Tag.query()
       setTags(tags)
       setSets(await Set.query())
-      setSelectedTag(tags[0].name)
-      //
-      
+      setSelectedTag(tags[0].name)    
     }
     setData()
   }, [])
 
-  /*
   useEffect(() => {
-    fetchDataAndCalVolume()
-  }, [volume])
-*/
-
-  const createTables = async () => {
-    await Session.createTable()
-    await Session_Set.createTable()
-    await Set.createTable()
-    await Tag.createTable()
-    await Workout.createTable()
-    await Workout_Session_Tag.createTable()
-    Alert.alert('Table created successfully!')
-  }
-
-  
-  const createWorkout = async (date) => {
-    const props = {
-      date: date,
+    if (tags.length != 0){
+      setVolumeWithTags()
+      setFrequencyWithVolume()
+      //setLoading(false)
     }
+  }, [tags])
 
-    Alert.alert(`Workout ${date} created successfully!`)
-    const workout = new Workout(props)
-    await workout.save()
-    setWorkouts(await Workout.query())
-  }
-  
-
-  const createSession = async ({name}) => {
-    const props = {
-      name: name,
-    }
-
-    const session = new Session(props)
-    await session.save()
-    setSessions(await Session.query())
-  }
-  
-
-  const createTag = async ({name}) => {
-    const props = {
-      name: name,
-    }
-
-    const tag = new Tag(props)
-    await tag.save()
-    setTags(await Tag.query())
-  }
-
-  const createSet = async ({weight, rep, time}) => {
-    const props = {
-      weight: weight,
-      rep: rep,
-      time, time
-    }
-
-    const set = new Set(props)
-    await set.save()
-    setSets(await Set.query())
-  }
-
-  
-  //
-  const calculateVolume = () => {
-    const workoutList = workouts
-    workoutList.map((workout) => {
-      
-    })
-  }
   const setVolumeWithTags = () => {
     let totalVolume = {}
     workouts.map((workout) => {
@@ -149,14 +85,6 @@ export default () => {
     })
   }
 
-  useEffect(() => {
-    if (tags.length != 0){
-      setVolumeWithTags()
-      setFrequencyWithVolume()
-      setLoading(false)
-    }
-  }, [tags])
-
   const setFrequencyWithVolume = () => {
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
     databaseLayer.executeSql(GET_WORKOUT_TAG)
@@ -168,11 +96,9 @@ export default () => {
         let color = data.color
         if (tag in frequencyDict){
           frequencyDict[tag]['value'] += 1
-          console.log(frequencyDict)
         }
         else {
           frequencyDict[tag] = {'value': 1, 'color': color}
-          console.log(frequencyDict)
         }
       })
       let frequencyList = []
@@ -193,35 +119,6 @@ export default () => {
     })
   }
 
-  /*
-  const fetchDataAndCalVolume = () => {
-    console.log('fetchDataAndCalVolume')
-    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
-    databaseLayer.executeSql(GET_WORKOUT_TAG_SETS)
-    .then((response) => {
-      const responseList = response.rows
-      let volumeDict = volume
-      //console.log('This is Volume Dict')
-      //console.log(volumeDict)
-      //console.log('---------------')
-      responseList.map((data) => {
-        let day = data.date
-        let tag = data.name
-        let vol = data.weight*data.rep
-
-        //console.log(`ref => day: ${day} / tag: ${tag}`)
-        volumeDict[day][tag] += vol
-        //console.log(volumeDict[day][tag])
-        //console.log(volumeDict)
-      })
-      setVolume(volumeDict)
-    })
-    .catch((err) => {
-      console.log(err )
-    })
-  }
-  */
-
   return (
     <ReportPresenter
       loading={loading}
@@ -230,16 +127,9 @@ export default () => {
       page={page}
       setPage={setPage}
       workouts={workouts}
-      setWorkouts={setWorkouts}
       sessions={sessions}
       tags={tags}
       sets={sets}
-      createTables={createTables}
-      createWorkout={createWorkout}
-      createSession={createSession}
-      createTag={createTag}
-      createSet={createSet}
-      calculateVolume={calculateVolume}
       volume={volume}
       selectedTag={selectedTag}
       setSelectedTag={setSelectedTag}

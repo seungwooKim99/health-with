@@ -4,7 +4,7 @@ import { View, Dimensions, Text } from "react-native";
 import { LineChart } from 'react-native-chart-kit';
 import { COLORS, SIZES } from '../constants';
 
-export default Chart = ({isRecent, volume, tags, selectedTag}) => {
+export default ({isRecent, volume, tags, selectedTag}) => {
 
   const [labels, setLabels] = useState([])
   const [data, setData] = useState([])
