@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Platform } from "react-native";
 import { COLORS, SIZES } from '../../constants';
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
+import { AdMobBanner } from 'expo-ads-admob';
+import Constants from 'expo-constants';
+
 
 //components
 import LineChart from '../../components/LineChart';
@@ -26,8 +29,34 @@ export default ({
   frequency
 }) => {
   
+  const adBannerUnitId =
+    Platform.OS === 'android'
+      ? '안드로이드 광고 id'
+      : 'ca-app-pub-7862994126923480/2703910847' // 광고 ID 입력
+
+  const adBannerUnitTestId = 
+    Platform.OS === 'android'
+    ? '안드로이드 광고 id'  
+    : 'ca-app-pub-3940256099942544/6300978111'
+
+  const AdBanner = () => {
+    return (
+      <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+        <AdMobBanner
+          bannerSize="fullBanner"
+          adUnitID={adBannerUnitTestId} // Test ID, Replace with your-admob-unit-id
+          servePersonalizedAds // true or false
+          onDidFailToReceiveAdWithError={(err) => {
+            console.log(err)
+          }}
+        />
+      </View>
+    )
+  }
+
   const ReportCard = ({title}) => {
-    
+
+
     const onPressTagHandler = (name) => {
       setSelectedTag(name)
     }
@@ -87,6 +116,7 @@ export default ({
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <AdBanner />
       <ScrollView>
         <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
           <View style={style.container}>
