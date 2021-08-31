@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
 import { COLORS, SIZES } from '../../constants';
 import { MaterialIcons, Entypo } from '@expo/vector-icons'
 
@@ -86,29 +86,49 @@ export default ({
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
-      <View style={style.container}>
-        <Text style={style.cardTitle}>운동 부위별 분석</Text>
-            <ReportCard
-              loading={loading}
-              tags={tags}
-              volume={volume}
-              page={page}
-              setPage={setPage}
-              isEnabled={isEnabled} 
-              etIsEnabled={setIsEnabled}
-              title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
-              selectedTag={selectedTag}
-              setSelectedTag={setSelectedTag}
-            />
-      </View>
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
+          <View style={style.container}>
+            <Text style={style.cardTitle}>운동 부위별 분석</Text>
+                <ReportCard
+                  loading={loading}
+                  tags={tags}
+                  volume={volume}
+                  page={page}
+                  setPage={setPage}
+                  isEnabled={isEnabled} 
+                  etIsEnabled={setIsEnabled}
+                  title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
+                  selectedTag={selectedTag}
+                  setSelectedTag={setSelectedTag}
+                />
+          </View>
+          <View style={style.container}>
+            <Text style={style.cardTitle}>운동별 분석</Text>
+                <ReportCard
+                  loading={loading}
+                  tags={tags}
+                  volume={volume}
+                  page={page}
+                  setPage={setPage}
+                  isEnabled={isEnabled} 
+                  etIsEnabled={setIsEnabled}
+                  title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
+                  selectedTag={selectedTag}
+                  setSelectedTag={setSelectedTag}
+                />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const style = StyleSheet.create({
   container:{
     width: '100%',
+    marginBottom: SIZES.padding
   },
   cardContainer:{
     justifyContent: 'center',
