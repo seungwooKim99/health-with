@@ -14,7 +14,7 @@ ON session_set.set_id = sets.id
 `
 
 export const GET_WORKOUT_SESSION_TAG = `
-  SELECT workout.date, session.name, tag.name
+  SELECT workout.date, session.name, tag.name as tag_name
   FROM workout
   JOIN workout_session_tag ON workout.id = workout_session_tag.workout_id
   JOIN session ON workout_session_tag.session_id = session.id

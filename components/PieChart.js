@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { Dimensions, View } from "react-native";
 import { PieChart } from 'react-native-chart-kit';
+import { useState } from 'react/cjs/react.development';
 import { COLORS } from '../constants';
 
-export default ({frequency}) => {
+export default ({frequency, selectedTag = null, cardNumber}) => {
   useEffect(() => {
+    console.log('this is pie chart')
     console.log(frequency)
+    console.log('selected tag')
+    console.log(selectedTag)
   }, [])
+
   const data = [
     { name: 'Seoul', freq: 21500000, color: 'rgba(131, 167, 234, 1)', legendFontColor: '#7F7F7F', legendFontSize: 15 },
     { name: 'Toronto', freq: 2800000, color: '#F00', legendFontColor: '#7F7F7F', legendFontSize: 15 },
@@ -18,8 +23,8 @@ export default ({frequency}) => {
   return(
     <View style={{alignItems:'center'}}>
       <PieChart
-        data={frequency}
-        width={Dimensions.get('window').width}
+        data={cardNumber == 1 ? frequency : frequency[selectedTag]}
+        width={Dimensions.get('window').width*0.8}
         height={220}
         chartConfig={{
           backgroundColor: '#12cc12',
@@ -29,7 +34,7 @@ export default ({frequency}) => {
         }}
         accessor="freq"
         backgroundColor="transparent"
-        paddingLeft="15"
+        paddingLeft="2"
       />
     </View>
   )

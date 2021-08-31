@@ -43,13 +43,12 @@ export default ({isRecent, volume, tags, selectedTag}) => {
               data: data
             }]
           }}
-          width={Dimensions.get('window').width}
+          width={Dimensions.get('window').width*0.8}
           height={220}
           chartConfig={{
-            backgroundColor: '#cs2d1d',
             backgroundGradientFrom: '#ffffff',
             backgroundGradientTo: '#ffffff',
-            decimalPlaces: 1, // optional, defaults to 2dp
+            decimalPlaces: 0, // optional, defaults to 2dp
             color: (opacity = 1) => `${COLORS.primary}`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
@@ -65,7 +64,7 @@ export default ({isRecent, volume, tags, selectedTag}) => {
             marginVertical: 0,
             borderRadius:16,
           }}
-          withHorizontalLabels={true}
+          withHorizontalLabels={false}
           withVerticalLines={false}
           withHorizontalLines={false}
           withOuterLines={false}

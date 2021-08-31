@@ -26,7 +26,13 @@ export default ({
   volume,
   selectedTag,
   setSelectedTag,
-  frequency
+  frequency,
+  selectedTag2,
+  setSelectedTag2,
+  sessionFrequency,
+  test,
+  page2,
+  setPage2
 }) => {
   
   const adBannerUnitId =
@@ -54,7 +60,7 @@ export default ({
     )
   }
 
-  const ReportCard = ({title}) => {
+  const ReportCard = ({cardNumber, title}) => {
 
 
     const onPressTagHandler = (name) => {
@@ -67,45 +73,86 @@ export default ({
           <Text style={style.cardSubTitle}>{title}</Text>
           <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
         </View>
-        {
-          loading && (
-            <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
-              <Spinner />
-            </View>
-          )
-        }
-        {
-          !loading && page == 0 && (
-            <>
-            <LineChart volume={volume} tags={tags} selectedTag={selectedTag} />
-            </>
-          )
-        }
-        {
-          !loading && page == 1 && (
-            <>
-            <PieChart frequency={frequency} />
-            </>
-          )
-        }
-        <View style={{flexDirection: 'row', justifyContent:'space-between', backgroundColor: '#ffffff', margin: SIZES.padding, borderRadius: 16}}>
-            <TouchableOpacity onPress={() => setPage(0)}>
-              <MaterialIcons name="arrow-back-ios" size={28} color={COLORS.primary} />
-            </TouchableOpacity>
-            <View style={{justifyContent:'center', flexDirection:'row'}}>
-              <Entypo name="dot-single" size={30} color={page == 0 ? COLORS.primary : COLORS.gray} />
-              <Entypo name="dot-single" size={30} color={page == 1 ? COLORS.primary : COLORS.gray} />
-            </View>
-            <TouchableOpacity onPress={() => setPage(1)}>
-              <MaterialIcons name="arrow-forward-ios" size={28} color={COLORS.primary} />
-            </TouchableOpacity>
-          </View>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          {
+            cardNumber == 1 && (
+              <TouchableOpacity onPress={() => setPage(0)}>
+                <MaterialIcons name="arrow-back-ios" size={28} color={page == 1 ? COLORS.primary : COLORS.gray} />
+              </TouchableOpacity>
+            )
+          }
+          {
+            loading && cardNumber == 1&& (
+              <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
+                <Spinner />
+              </View>
+            )
+          }
+          {
+            !loading && cardNumber == 1 && page == 0 && (
+              <>
+              <LineChart volume={volume} tags={tags} selectedTag={selectedTag} />
+              </>
+            )
+          }
+          {
+            !loading && cardNumber == 1 && page == 1 && (
+              <>
+              <PieChart frequency={frequency} cardNumber={1} />
+              </>
+            )
+          }
+          {
+            cardNumber == 1 && (
+              <TouchableOpacity onPress={() => setPage(1)}>
+                <MaterialIcons name="arrow-forward-ios" size={28} color={page == 0 ? COLORS.primary : COLORS.gray} />
+              </TouchableOpacity>
+            )
+          }
+
+          {
+            cardNumber == 2 && (
+              <TouchableOpacity onPress={() => setPage2(0)}>
+                <MaterialIcons name="arrow-back-ios" size={28} color={page2 == 1 ? COLORS.primary : COLORS.gray} />
+              </TouchableOpacity>
+            )
+          }
+          {
+            loading && cardNumber == 2 && (
+              <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
+                <Spinner />
+              </View>
+            )
+          }
+          {
+            !loading && cardNumber == 2 && page2 == 1 && (
+              <>
+              <PieChart frequency={sessionFrequency} selectedTag={selectedTag2} cardNumber={2} />
+              </>
+            )
+          }
+          {
+            cardNumber == 2 && (
+              <TouchableOpacity onPress={() => setPage2(1)}>
+                <MaterialIcons name="arrow-forward-ios" size={28} color={page2 != 1 ? COLORS.primary : COLORS.gray} />
+              </TouchableOpacity>
+            )
+          }
+        </View>
         <View style={{flexDirection: 'row', padding: SIZES.padding}}>
           {
-            page == 0 && tags && tags.map((tag) => 
+            page == 0 && cardNumber == 1 && tags && tags.map((tag) => 
               (
                 <TouchableOpacity key={tag.id} onPress={() => onPressTagHandler(tag.name)}>
-                  <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.tag_gray} />
+                  <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.gray} />
+                </TouchableOpacity>
+            ))
+          }
+          {
+            page2 == 1 && cardNumber == 2 && sessionFrequency && Object.keys(sessionFrequency).map((tag, index) => 
+              (
+                <TouchableOpacity key={index} onPress={() => setSelectedTag2(tag)}>
+                  <Tag key={index} name={tag} color={tag == selectedTag2 ? COLORS.tag_orange : COLORS.gray} />
                 </TouchableOpacity>
             ))
           }
@@ -116,41 +163,28 @@ export default ({
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <AdBanner />
       <ScrollView>
         <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", backgroundColor: COLORS.lightGray4}}>
           <View style={style.container}>
             <Text style={style.cardTitle}>운동 부위별 분석</Text>
                 <ReportCard
-                  loading={loading}
-                  tags={tags}
-                  volume={volume}
-                  page={page}
-                  setPage={setPage}
-                  isEnabled={isEnabled} 
-                  etIsEnabled={setIsEnabled}
-                  title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
-                  selectedTag={selectedTag}
-                  setSelectedTag={setSelectedTag}
+                  cardNumber={1}
+                  title={page == 0 ? '볼륨 분석(kg)' : '빈도 분석(회)'}
                 />
           </View>
           <View style={style.container}>
             <Text style={style.cardTitle}>운동별 분석</Text>
                 <ReportCard
-                  loading={loading}
-                  tags={tags}
-                  volume={volume}
-                  page={page}
-                  setPage={setPage}
-                  isEnabled={isEnabled} 
-                  etIsEnabled={setIsEnabled}
-                  title={page == 0 ? '볼륨별 분석(kg)' : '전체 빈도별 분석(회)'}
-                  selectedTag={selectedTag}
-                  setSelectedTag={setSelectedTag}
+                  cardNumber={2}
+                  title={page2 == 0 ? '무게 분석(kg)' : '빈도 분석(회)'}
                 />
           </View>
         </View>
+        <TouchableOpacity onPress={test}>
+          <Text>test</Text>
+        </TouchableOpacity>
       </ScrollView>
+      <AdBanner />
     </SafeAreaView>
   )
 }
@@ -163,16 +197,18 @@ const style = StyleSheet.create({
   cardContainer:{
     justifyContent: 'center',
     backgroundColor: '#ffffff',
+    opacity: 1,
     borderRadius: 16,
     padding: SIZES.padding2,
   },
   cardTitle:{
-    fontSize: SIZES.h3,
+    fontSize: SIZES.h4,
     fontWeight: '600',
     margin: SIZES.padding3,
+    marginTop: 22
   },
   cardSubTitle:{
-    fontSize: SIZES.h4,
+    fontSize: SIZES.body3,
     fontWeight: '600',
     margin: SIZES.padding,
   },

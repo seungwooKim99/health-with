@@ -17,19 +17,24 @@ import Workout from '../../model/Workout';
 import Workout_Session_Tag from '../../model/Workout_Session_Tag';
 
 //queries
-import { GET_WORKOUT_TAG_SETS, GET_WORKOUT_TAG } from './ReportQueries';
+import { GET_WORKOUT_SESSION_TAG, GET_WORKOUT_TAG_SETS, GET_WORKOUT_TAG } from './ReportQueries';
 import { COLORS, SIZES } from '../../constants';
 
 
 export default () => {
   const [loading, setLoading] = useState(true)
+
   const [volume, setVolume] = useState({})
   const [frequency, setFrequency] = useState([])
   const [selectedTag, setSelectedTag] = useState(null)
 
+  const [sessionFrequency, setSessionFrequency] = useState([])
+  const [selectedTag2, setSelectedTag2] = useState(null)
+
   const [isEnabled, setIsEnabled] = useState(false);
 
   const [page, setPage] = useState(0);
+  const [page2, setPage2] = useState(0);
 
   const [workouts, setWorkouts] = useState([])
   const [sessions, setSessions] = useState([])
@@ -52,6 +57,7 @@ export default () => {
     if (tags.length != 0){
       setVolumeWithTags()
       setFrequencyWithVolume()
+      setMaxWeight()
       setLoading(false)
     }
   }, [tags])
@@ -119,6 +125,67 @@ export default () => {
     })
   }
 
+  const setMaxWeight = () => {
+    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
+    databaseLayer.executeSql(GET_WORKOUT_SESSION_TAG)
+    .then((response) => {
+      const responseList = response.rows
+      const sessionFrequencyDict = {}
+      let firstTag = null
+      responseList.map((data, index) => {
+        let session_name = data.name
+        let tag_name = data.tag_name
+        if (index == 0) {
+          firstTag = tag_name
+        }
+        if (tag_name in sessionFrequencyDict) {
+          //
+          if (session_name in sessionFrequencyDict[tag_name]) {
+            sessionFrequencyDict[tag_name][session_name] += 1
+          }
+          else {
+            sessionFrequencyDict[tag_name][session_name] = 1
+          }
+        }
+        else {
+          sessionFrequencyDict[tag_name] = {}
+          sessionFrequencyDict[tag_name][session_name] = 1
+        }
+    })
+    console.log(sessionFrequencyDict)
+
+    let tagColors = [
+      COLORS.tag_blue,
+      COLORS.tag_green,
+      COLORS.tag_orange,
+      COLORS.tag_purple,
+      COLORS.tag_pink
+    ]
+
+    let sessionFrequencyDictForPieChart = {}
+    sessionFrequencyKeyList = Object.keys(sessionFrequencyDict)
+    sessionFrequencyKeyList.map((tag) => {
+      let sessionKeyList = Object.keys(sessionFrequencyDict[tag])
+      sessionFrequencyDictForPieChart[tag] = []
+      sessionKeyList.map((session, index) => {
+        let elem = {}
+        elem['name'] = `${session} (${sessionFrequencyDict[tag][session]}회)`
+        elem['freq'] = sessionFrequencyDict[tag][session]
+        elem['color'] = tagColors[index]
+        elem['legendFontColor'] = '#3b3b3b'
+        elem['legendFontSize'] = SIZES.body4
+        sessionFrequencyDictForPieChart[tag].push(elem)
+      })
+    })
+    setSelectedTag2(firstTag)
+    setSessionFrequency(sessionFrequencyDictForPieChart)
+    console.log(sessionFrequencyDictForPieChart)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
   return (
     <ReportPresenter
       loading={loading}
@@ -134,6 +201,12 @@ export default () => {
       selectedTag={selectedTag}
       setSelectedTag={setSelectedTag}
       frequency={frequency}
+      selectedTag2={selectedTag2}
+      setSelectedTag2={setSelectedTag2}
+      sessionFrequency={sessionFrequency}
+      test={setMaxWeight}
+      page2={page2}
+      setPage2={setPage2}
     />
   )
 }

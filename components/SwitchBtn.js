@@ -15,6 +15,7 @@ export default SwitchBtn = ({isEnabled, setIsEnabled}) => {
         ios_backgroundColor={COLORS.gray}
         onValueChange={toggleSwitch}
         value={isEnabled}
+        style={{transform: [{ scaleX: .8 }, { scaleY: .8 }]}}
       />
       <Text style={styles.text}>전체</Text>
     </View>
@@ -29,6 +30,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 10,
-    margin: SIZES.padding,
+    margin: 2,
   }
 })
