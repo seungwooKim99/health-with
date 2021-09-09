@@ -21,7 +21,8 @@ export default ({isRecent, volume, tags, selectedTag}) => {
         //setLabels((prev) => [...prev, date])
         if (elem[selectedTag] != 0) {
           dataList.push(elem[selectedTag])
-          labelsList.push(date)
+          let dateSplitArr = date.split('-')
+          labelsList.push(`${dateSplitArr[1]}-${dateSplitArr[2]}`)
         }
       }
     })
@@ -46,8 +47,10 @@ export default ({isRecent, volume, tags, selectedTag}) => {
           width={Dimensions.get('window').width*0.8}
           height={220}
           chartConfig={{
+            backgroundColor: '#ffffff',
             backgroundGradientFrom: '#ffffff',
             backgroundGradientTo: '#ffffff',
+            fillShadowGradient: '#ffffff',
             decimalPlaces: 0, // optional, defaults to 2dp
             color: (opacity = 1) => `${COLORS.primary}`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -69,6 +72,7 @@ export default ({isRecent, volume, tags, selectedTag}) => {
           withHorizontalLines={false}
           withOuterLines={false}
           verticalLabelRotation={0}
+          onDataPointClick={(e) => console.log(e)}
         />
       )}
       {
@@ -76,7 +80,8 @@ export default ({isRecent, volume, tags, selectedTag}) => {
         <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
           <Text>데이터가 없어요!</Text>
         </View>
-        )}
+        )
+      }
     </View>
   )
 }

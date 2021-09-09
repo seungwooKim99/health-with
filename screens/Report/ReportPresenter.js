@@ -74,7 +74,9 @@ export default ({
           <SwitchBtn isEnabled={isEnabled} setIsEnabled={setIsEnabled} />
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          {/* 운동 부위별 분석 파트 */}
           {
+            /* 운동 부위별 분석 카드 - 왼쪽 화살표 */
             cardNumber == 1 && (
               <TouchableOpacity onPress={() => setPage(0)}>
                 <MaterialIcons name="arrow-back-ios" size={28} color={page == 1 ? COLORS.primary : COLORS.gray} />
@@ -82,6 +84,7 @@ export default ({
             )
           }
           {
+            /* 스피너 */
             loading && cardNumber == 1&& (
               <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
                 <Spinner />
@@ -89,6 +92,7 @@ export default ({
             )
           }
           {
+            /* 운동 부위별 분석 카드 - 볼륨 분석 */
             !loading && cardNumber == 1 && page == 0 && (
               <>
               <LineChart volume={volume} tags={tags} selectedTag={selectedTag} />
@@ -96,6 +100,7 @@ export default ({
             )
           }
           {
+            /* 운동 부위별 분석 카드 - 빈도 분석 */
             !loading && cardNumber == 1 && page == 1 && (
               <>
               <PieChart frequency={frequency} cardNumber={1} />
@@ -103,6 +108,7 @@ export default ({
             )
           }
           {
+            /* 운동 부위별 분석 카드 - 오른쪽 화살표 */
             cardNumber == 1 && (
               <TouchableOpacity onPress={() => setPage(1)}>
                 <MaterialIcons name="arrow-forward-ios" size={28} color={page == 0 ? COLORS.primary : COLORS.gray} />
@@ -110,7 +116,9 @@ export default ({
             )
           }
 
+          {/* 운동별 분석 파트 */}
           {
+            /* 운동별 분석 카드 - 왼쪽 화살표 */
             cardNumber == 2 && (
               <TouchableOpacity onPress={() => setPage2(0)}>
                 <MaterialIcons name="arrow-back-ios" size={28} color={page2 == 1 ? COLORS.primary : COLORS.gray} />
@@ -118,6 +126,7 @@ export default ({
             )
           }
           {
+            /* 스피너 */
             loading && cardNumber == 2 && (
               <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
                 <Spinner />
@@ -125,6 +134,7 @@ export default ({
             )
           }
           {
+            /* 운동별 분석 카드 - 빈도 분석 */
             !loading && cardNumber == 2 && page2 == 1 && (
               <>
               <PieChart frequency={sessionFrequency} selectedTag={selectedTag2} cardNumber={2} />
@@ -132,6 +142,7 @@ export default ({
             )
           }
           {
+            /* 운동별 분석 카드 - 오른쪽 화살표 */
             cardNumber == 2 && (
               <TouchableOpacity onPress={() => setPage2(1)}>
                 <MaterialIcons name="arrow-forward-ios" size={28} color={page2 != 1 ? COLORS.primary : COLORS.gray} />
@@ -140,6 +151,7 @@ export default ({
           }
         </View>
         <View style={{flexDirection: 'row', padding: SIZES.padding}}>
+          {/* 운동 부위별 분석 카드 - 태그 목록 */}
           {
             page == 0 && cardNumber == 1 && tags && tags.map((tag) => 
               (
@@ -149,10 +161,22 @@ export default ({
             ))
           }
           {
+            /*
             page2 == 1 && cardNumber == 2 && sessionFrequency && Object.keys(sessionFrequency).map((tag, index) => 
               (
                 <TouchableOpacity key={index} onPress={() => setSelectedTag2(tag)}>
                   <Tag key={index} name={tag} color={tag == selectedTag2 ? COLORS.tag_orange : COLORS.gray} />
+                </TouchableOpacity>
+            ))
+            */
+          }
+
+          {/* 운동별 분석 카드 - 태그 목록 */}
+          {
+            page2 == 1 && cardNumber == 2 && sessionFrequency && tags.map((tag, index) => 
+              (
+                <TouchableOpacity key={index} onPress={() => setSelectedTag2(tag.name)}>
+                  <Tag key={index} name={tag.name} color={tag.name == selectedTag2 ? tag.color : COLORS.gray} />
                 </TouchableOpacity>
             ))
           }

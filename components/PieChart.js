@@ -21,21 +21,53 @@ export default ({frequency, selectedTag = null, cardNumber}) => {
   ]
 
   return(
-    <View style={{alignItems:'center'}}>
-      <PieChart
-        data={cardNumber == 1 ? frequency : frequency[selectedTag]}
-        width={Dimensions.get('window').width*0.8}
-        height={220}
-        chartConfig={{
-          backgroundColor: '#12cc12',
-          backgroundGradientFrom: '#12cc12',
-          backgroundGradientTo: '#ffffff',
-          color: (opacity = 1) => `${COLORS.primary}`,
-        }}
-        accessor="freq"
-        backgroundColor="transparent"
-        paddingLeft="2"
-      />
-    </View>
+    <>
+      {
+        cardNumber == 1 && (
+          <View style={{alignItems:'center'}}>
+            <PieChart
+              data={frequency}
+              width={Dimensions.get('window').width*0.8}
+              height={220}
+              chartConfig={{
+                backgroundColor: '#12cc12',
+                backgroundGradientFrom: '#12cc12',
+                backgroundGradientTo: '#ffffff',
+                color: (opacity = 1) => `${COLORS.primary}`,
+              }}
+              accessor="freq"
+              backgroundColor="transparent"
+              paddingLeft="2"
+            />
+          </View>
+        )
+      }
+      {
+        (cardNumber == 2) && (
+            (selectedTag in frequency) ? (
+              <View style={{alignItems:'center'}}>
+                <PieChart
+                  data={frequency[selectedTag]}
+                  width={Dimensions.get('window').width*0.8}
+                  height={220}
+                  chartConfig={{
+                    backgroundColor: '#12cc12',
+                    backgroundGradientFrom: '#12cc12',
+                    backgroundGradientTo: '#ffffff',
+                    color: (opacity = 1) => `${COLORS.primary}`,
+                  }}
+                  accessor="freq"
+                  backgroundColor="transparent"
+                  paddingLeft="2"
+                />
+              </View>
+            ) : (
+              <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
+                <Text>데이터가 없어요!</Text>
+              </View>
+            )
+        )
+      }
+    </>
   )
 }

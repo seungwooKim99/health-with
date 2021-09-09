@@ -48,7 +48,8 @@ export default () => {
       const tags = await Tag.query()
       setTags(tags)
       setSets(await Set.query())
-      setSelectedTag(tags[0].name)    
+      setSelectedTag(tags[0].name)
+      setSelectedTag2(tags[0].name)
     }
     setData()
   }, [])
@@ -177,7 +178,7 @@ export default () => {
         sessionFrequencyDictForPieChart[tag].push(elem)
       })
     })
-    setSelectedTag2(firstTag)
+    //setSelectedTag2(firstTag)
     setSessionFrequency(sessionFrequencyDictForPieChart)
     console.log(sessionFrequencyDictForPieChart)
     })
