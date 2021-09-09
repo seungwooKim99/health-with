@@ -155,9 +155,12 @@ export default ({
           {
             page == 0 && cardNumber == 1 && tags && tags.map((tag) => 
               (
-                <TouchableOpacity key={tag.id} onPress={() => onPressTagHandler(tag.name)}>
-                  <Tag key={tag.id} name={tag.name} color={tag.name == selectedTag ? tag.color : COLORS.gray} />
-                </TouchableOpacity>
+                  <Tag
+                    key={tag.id}
+                    name={tag.name}
+                    color={tag.name == selectedTag ? tag.color : COLORS.gray}
+                    onPress={onPressTagHandler}
+                  />
             ))
           }
           {
@@ -175,9 +178,12 @@ export default ({
           {
             page2 == 1 && cardNumber == 2 && sessionFrequency && tags.map((tag, index) => 
               (
-                <TouchableOpacity key={index} onPress={() => setSelectedTag2(tag.name)}>
-                  <Tag key={index} name={tag.name} color={tag.name == selectedTag2 ? tag.color : COLORS.gray} />
-                </TouchableOpacity>
+                  <Tag
+                    key={index}
+                    name={tag.name}
+                    color={tag.name == selectedTag2 ? tag.color : COLORS.gray}
+                    onPress={setSelectedTag2}
+                  />
             ))
           }
         </View>
