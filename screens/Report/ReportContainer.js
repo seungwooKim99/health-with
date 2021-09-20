@@ -17,7 +17,7 @@ import Workout from '../../model/Workout';
 import Workout_Session_Tag from '../../model/Workout_Session_Tag';
 
 //queries
-import { GET_WORKOUT_SESSION_TAG, GET_WORKOUT_TAG_SETS, GET_WORKOUT_TAG } from './ReportQueries';
+import { GET_WORKOUT_SESSION_TAG, GET_WORKOUT_TAG_SETS, GET_WORKOUT_TAG, GET_SESSION_NAME_TAG_NAME_WORKOUT_WEIGHT } from './ReportQueries';
 import { COLORS, SIZES } from '../../constants';
 
 
@@ -30,6 +30,8 @@ export default () => {
 
   const [sessionFrequency, setSessionFrequency] = useState([])
   const [selectedTag2, setSelectedTag2] = useState(null)
+
+  const [maxWeight, setMaxWeight] = useState({})
 
   const [isEnabled, setIsEnabled] = useState(false);
 
@@ -58,10 +60,16 @@ export default () => {
     if (tags.length != 0){
       setVolumeWithTags()
       setFrequencyWithVolume()
-      setMaxWeight()
+      setFrequencyWithSession()
       setLoading(false)
     }
   }, [tags])
+
+  useEffect(() => {
+    if (sessions.length != 0) {
+      setMaxWeightWithSession()
+    }
+  }, [sessions])
 
   const setVolumeWithTags = () => {
     let totalVolume = {}
@@ -72,6 +80,8 @@ export default () => {
       })
       totalVolume[workout.date] = prevVolume
     })
+    //console.log('This is totalVolume')
+    //console.log(totalVolume)
 
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
     databaseLayer.executeSql(GET_WORKOUT_TAG_SETS)
@@ -86,6 +96,8 @@ export default () => {
         volumeDict[day][tag] += vol
       })
       setVolume(totalVolume)
+      //console.log('This is final totalVolume')
+      //console.log(totalVolume)
     })
     .catch((err) => {
       console.log(err )
@@ -126,7 +138,7 @@ export default () => {
     })
   }
 
-  const setMaxWeight = () => {
+  const setFrequencyWithSession = () => {
     const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
     databaseLayer.executeSql(GET_WORKOUT_SESSION_TAG)
     .then((response) => {
@@ -153,7 +165,6 @@ export default () => {
           sessionFrequencyDict[tag_name][session_name] = 1
         }
     })
-    console.log(sessionFrequencyDict)
 
     let tagColors = [
       COLORS.tag_blue,
@@ -180,7 +191,44 @@ export default () => {
     })
     //setSelectedTag2(firstTag)
     setSessionFrequency(sessionFrequencyDictForPieChart)
-    console.log(sessionFrequencyDictForPieChart)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const setMaxWeightWithSession = () => {
+    let totalMaxWeight = {}
+    sessions.map((session) => {
+      totalMaxWeight[session.name] = {}
+    })
+
+    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('testDB.db'))
+    databaseLayer.executeSql(GET_SESSION_NAME_TAG_NAME_WORKOUT_WEIGHT)
+    .then((response) => {
+      const responseList = response.rows
+      responseList.map((data) => {
+        let sessionName = data.name
+        let tag_name = data.tag_name
+        let date = data.date
+        let weight = data.weight
+
+        if (tag_name in totalMaxWeight[sessionName]) {
+
+          if (date in totalMaxWeight[sessionName][tag_name]) {
+            totalMaxWeight[sessionName][tag_name][date].push(weight)
+          }
+          else {
+            totalMaxWeight[sessionName][tag_name][date] = [weight]
+          }
+        }
+        else {
+          let tempDict = {}
+          tempDict[date] = [weight]
+          totalMaxWeight[sessionName][tag_name] = tempDict
+        }
+      })
+      setMaxWeight(totalMaxWeight)
     })
     .catch((err) => {
       console.log(err)
@@ -205,9 +253,10 @@ export default () => {
       selectedTag2={selectedTag2}
       setSelectedTag2={setSelectedTag2}
       sessionFrequency={sessionFrequency}
-      test={setMaxWeight}
       page2={page2}
       setPage2={setPage2}
+      setMaxWeight={setMaxWeight}
+      maxWeight={maxWeight}
     />
   )
 }

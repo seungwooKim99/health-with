@@ -4,13 +4,12 @@ import { View, Dimensions, Text } from "react-native";
 import { LineChart } from 'react-native-chart-kit';
 import { COLORS, SIZES } from '../constants';
 
-export default ({isRecent, volume, tags, selectedTag}) => {
+export default ({isRecent, volume, maxWeight, tags, selectedTag, cardNumber}) => {
 
   const [labels, setLabels] = useState([])
   const [data, setData] = useState([])
 
-  const setTotalLabelAndData = () => {
-
+  const setTotalLabelAndDataForVolume = () => {
     const totalDate = Object.keys(volume)
     let dataList = []
     let labelsList = []
@@ -30,13 +29,44 @@ export default ({isRecent, volume, tags, selectedTag}) => {
     setLabels(labelsList)
   }
 
-  useState(() => {
-    setTotalLabelAndData()
+  const setTotalLabelAndDataForMaxWeight = () => {
+    const selectedSession = '랫풀다운'
+    const selectedTag_ = '등'
+
+    console.log('this is maxweight--------------------------------------------')
+    console.log(maxWeight[selectedSession][selectedTag_])
+    //console.log(maxWeight)
+    const keyList = Object.keys(maxWeight[selectedSession][selectedTag_])
+    let maxWeightLabels = []
+    let maxWeightDatasets = []
+    keyList.map((key) => {
+      let date = key
+      console.log('this is maxweight of first date--------------------------------------------')
+      console.log(maxWeight)
+      let maxWeightValue = Math.max.apply(null, maxWeight[selectedSession][selectedTag_][date])
+      let dateSplitArr = date.split('-')
+      maxWeightLabels.push(`${dateSplitArr[1]}-${dateSplitArr[2]}`)
+      maxWeightDatasets.push(maxWeightValue)
+    })
+    setLabels(maxWeightLabels)
+    setData(maxWeightDatasets)
+  }
+
+  useEffect(() => {
+    if (volume != null) {
+      setTotalLabelAndDataForVolume()
+    }
   }, [volume])
+
+  useEffect(() => {
+    if (maxWeight != null) {
+      setTotalLabelAndDataForMaxWeight()
+    }
+  }, [maxWeight])
 
   return (
     <View style={{alignItems:'center'}}>
-      { data && labels && data.length != 0 && labels.length != 0 && (
+      { data && labels && data.length != 0 && labels.length != 0 && cardNumber == 1 && (
       <LineChart
           data={{
             labels: labels,
@@ -67,7 +97,46 @@ export default ({isRecent, volume, tags, selectedTag}) => {
             marginVertical: 0,
             borderRadius:16,
           }}
-          withHorizontalLabels={false}
+          withHorizontalLabels={true}
+          withVerticalLines={false}
+          withHorizontalLines={false}
+          withOuterLines={false}
+          verticalLabelRotation={0}
+          onDataPointClick={(e) => console.log(e)}
+        />
+      )}
+      { volume == null && data && labels && data.length != 0 && labels.length != 0 && cardNumber == 2 && (
+      <LineChart
+          data={{
+            labels: labels,
+            datasets: [{
+              data: data
+            }]
+          }}
+          width={Dimensions.get('window').width*0.8}
+          height={220}
+          chartConfig={{
+            backgroundColor: '#ffffff',
+            backgroundGradientFrom: '#ffffff',
+            backgroundGradientTo: '#ffffff',
+            fillShadowGradient: '#ffffff',
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `${COLORS.primary}`,
+            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            style: {
+              borderRadius: 4
+            },
+            propsForDots: {
+              r: "3",
+              strokeWidth: "1",
+              stroke: `${COLORS.primary}`,
+            }
+          }}
+          style={{
+            marginVertical: 0,
+            borderRadius:16,
+          }}
+          withHorizontalLabels={true}
           withVerticalLines={false}
           withHorizontalLines={false}
           withOuterLines={false}
@@ -78,7 +147,7 @@ export default ({isRecent, volume, tags, selectedTag}) => {
       {
         data.length == 0 && (
         <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>데이터가 없어요!</Text>
+          <Text> </Text>
         </View>
         )
       }

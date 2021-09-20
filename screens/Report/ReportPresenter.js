@@ -30,9 +30,10 @@ export default ({
   selectedTag2,
   setSelectedTag2,
   sessionFrequency,
-  test,
   page2,
-  setPage2
+  setPage2,
+  setMaxWeight,
+  maxWeight
 }) => {
   
   const adBannerUnitId =
@@ -95,7 +96,7 @@ export default ({
             /* 운동 부위별 분석 카드 - 볼륨 분석 */
             !loading && cardNumber == 1 && page == 0 && (
               <>
-              <LineChart volume={volume} tags={tags} selectedTag={selectedTag} />
+              <LineChart volume={volume} maxWeight={null} tags={tags} selectedTag={selectedTag} cardNumber={1}/>
               </>
             )
           }
@@ -131,6 +132,14 @@ export default ({
               <View style={{height: 220, justifyContent: 'center', alignItems: 'center'}}>
                 <Spinner />
               </View>
+            )
+          }
+          {
+            /* 운동별 분석 카드 - 최고 무게 분석 */
+            !loading && cardNumber == 2 && page2 == 0 && (
+              <>
+              <LineChart volume={null} maxWeight={maxWeight} tags={tags} selectedTag={selectedTag} cardNumber={2} />
+              </>
             )
           }
           {
@@ -210,9 +219,6 @@ export default ({
                 />
           </View>
         </View>
-        <TouchableOpacity onPress={test}>
-          <Text>test</Text>
-        </TouchableOpacity>
       </ScrollView>
       <AdBanner />
     </SafeAreaView>
